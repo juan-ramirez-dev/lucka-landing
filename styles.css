@@ -1,0 +1,274 @@
+/* Colores: tokens en el <style> de index.html. */
+:root {
+  --font-sans: "Geist", system-ui, -apple-system, sans-serif;
+  --font-serif: "Bodoni Moda", "Bodoni 72", Didot, serif;
+
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --line: 1px solid var(--color-ink);
+  --line-soft: 1px solid var(--color-border);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+main,
+.top,
+.foot {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+/* Barra superior */
+.top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-block: 1.5rem;
+  border-bottom: var(--line);
+}
+
+.wordmark {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 1.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.top-link {
+  font-size: 0.875rem;
+  text-underline-offset: 3px;
+}
+
+/* Hero */
+.hero {
+  padding-block: clamp(3rem, 9vw, 6.5rem) 3rem;
+  max-width: 46rem;
+}
+
+.eyebrow {
+  margin: 0 0 1rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 6.5vw, 4.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+h1 em {
+  color: var(--color-primary);
+}
+
+.lead {
+  max-width: 34rem;
+  margin: 1.5rem 0 0;
+  font-size: 1.125rem;
+  color: var(--color-text-muted);
+}
+
+.download {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.875rem;
+  margin-top: 2.5rem;
+}
+
+.button {
+  display: inline-block;
+  padding: 1rem 1.75rem;
+  background: var(--color-ink);
+  color: var(--color-text-inverse);
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: background 200ms ease;
+}
+
+.button:hover {
+  background: var(--color-primary);
+}
+
+.alt {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  text-underline-offset: 3px;
+}
+
+.note {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+/* Captura */
+.shot {
+  margin: 0 0 clamp(3rem, 8vw, 6rem);
+  border: var(--line);
+  background: var(--color-surface);
+}
+
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.shot-placeholder {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--color-text-muted);
+}
+
+/* Qué hace */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 2rem;
+  padding-bottom: clamp(3rem, 8vw, 6rem);
+}
+
+.grid article {
+  padding-top: 1.25rem;
+  border-top: var(--line);
+}
+
+h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.75rem;
+  line-height: 1.1;
+}
+
+.grid p {
+  margin: 0.75rem 0 0;
+  color: var(--color-text-muted);
+}
+
+/* Primera vez */
+.first-run {
+  padding-block: clamp(3rem, 8vw, 5rem);
+  border-top: var(--line);
+}
+
+.first-run h2 {
+  font-size: clamp(2rem, 4.5vw, 2.75rem);
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  gap: 1.5rem;
+  margin: 2.5rem 0 1.5rem;
+}
+
+.steps article {
+  padding: 1.5rem;
+  background: var(--color-field);
+  border: var(--line-soft);
+  border-radius: 2px;
+}
+
+h3 {
+  margin: 0 0 1rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+ol {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+li + li {
+  margin-top: 0.5rem;
+}
+
+details {
+  margin-top: 1.25rem;
+  font-size: 0.875rem;
+}
+
+summary {
+  cursor: pointer;
+  color: var(--color-text-muted);
+}
+
+pre {
+  margin: 0.75rem 0 0;
+  padding: 0.75rem;
+  overflow-x: auto;
+  background: var(--color-surface);
+  border-radius: 2px;
+}
+
+code {
+  font-size: 0.8125rem;
+}
+
+/* Pie */
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-block: 2rem 3rem;
+  border-top: var(--line);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.foot a {
+  text-underline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

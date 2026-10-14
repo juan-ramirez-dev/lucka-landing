@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lucka — tus finanzas, en tu computador</title>
+    <meta
+      name="description"
+      content="Cuánto tengo disponible y en qué se me va el dinero. App de escritorio gratis para macOS y Windows. Tus datos nunca salen de tu computador."
+    />
+    <meta name="theme-color" content="#7a1838" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Lucka — tus finanzas, en tu computador" />
+    <meta
+      property="og:description"
+      content="Cuánto tengo disponible y en qué se me va el dinero. Sin cuenta, sin nube."
+    />
+    <meta property="og:url" content="https://juan-ramirez-dev.github.io/lucka-landing/" />
+    <meta property="og:image" content="https://juan-ramirez-dev.github.io/lucka-landing/assets/icon.png" />
+    <meta name="twitter:card" content="summary" />
+
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="assets/icon.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Geist:wght@400;500;600&display=swap"
+    />
+    <!-- Mismos tokens que la app (lucka/src/app/globals.css). Único lugar con colores literales. -->
+    <style>
+      :root {
+        color-scheme: light;
+        --color-bg: #f3eee5;
+        --color-surface: #e9e2d5;
+        --color-field: #fbf8f3;
+        --color-border: #d8d0c1;
+        --color-text: #15181d;
+        --color-text-muted: #6a6358;
+        --color-text-inverse: #f3eee5;
+        --color-ink: #15181d;
+        --color-primary: #7a1838;
+      }
+    </style>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="top">
+      <span class="wordmark">Lucka</span>
+      <a class="top-link" href="https://github.com/juan-ramirez-dev/lucka">Código</a>
+    </header>
+
+    <main>
+      <section class="hero">
+        <p class="eyebrow">Gratis · macOS y Windows</p>
+        <h1>Cuánto tienes disponible, <em>sin que nadie más lo vea.</em></h1>
+        <p class="lead">
+          Lucka te dice cuánto te queda este mes y en qué se te va el dinero. Todo vive en tu computador: sin
+          cuenta, sin nube.
+        </p>
+
+        <div class="download" id="download">
+          <a class="button" id="primary" href="https://github.com/juan-ramirez-dev/lucka/releases/latest/download/Lucka-macos.dmg">
+            Descargar para macOS
+          </a>
+          <a class="alt" id="secondary" href="https://github.com/juan-ramirez-dev/lucka/releases/latest/download/Lucka-windows-setup.exe">
+            ¿Usas Windows? Descarga aquí
+          </a>
+          <p class="note" id="other" hidden>Lucka es para macOS y Windows. Descárgala desde tu computador.</p>
+        </div>
+      </section>
+
+      <figure class="shot">
+        <!-- Reemplazar por assets/screenshot.png -->
+        <div class="shot-placeholder">Captura de la app</div>
+      </figure>
+
+      <section class="grid">
+        <article>
+          <h2>Disponible, de verdad</h2>
+          <p>Ingreso menos lo gastado menos los fijos que faltan. De día de pago a día de pago.</p>
+        </article>
+        <article>
+          <h2>Fijos y categorías</h2>
+          <p>Marca el arriendo como pagado. Ve cuánto te queda en mercado o salidas.</p>
+        </article>
+        <article id="privacidad">
+          <h2>Privado por diseño</h2>
+          <p>No hay servidor. Tus datos están en un archivo en tu equipo. Exporta un respaldo cuando quieras.</p>
+        </article>
+      </section>
+
+      <section class="first-run" id="primera-vez">
+        <p class="eyebrow">Primera vez que la abres</p>
+        <h2>Tu sistema te va a avisar. Es normal.</h2>
+        <p class="lead">
+          Lucka es open source y no paga certificados de Apple ni Microsoft. Por eso el sistema pide confirmar una
+          sola vez.
+        </p>
+
+        <div class="steps">
+          <article>
+            <h3>macOS</h3>
+            <ol>
+              <li>Abre el <code>.dmg</code> y arrastra Lucka a Aplicaciones.</li>
+              <li>Ábrela. Sale un aviso: dale <strong>Listo</strong>.</li>
+              <li>Ajustes del Sistema → Privacidad y seguridad → <strong>Abrir igualmente</strong>.</li>
+            </ol>
+            <!-- Captura: assets/macos-aviso.png -->
+            <details>
+              <summary>Si eres técnico</summary>
+              <pre><code>xattr -dr com.apple.quarantine /Applications/Lucka.app</code></pre>
+            </details>
+          </article>
+          <article>
+            <h3>Windows</h3>
+            <ol>
+              <li>Abre el instalador.</li>
+              <li>Sale “Windows protegió su PC”: clic en <strong>Más información</strong>.</li>
+              <li>Clic en <strong>Ejecutar de todas formas</strong>.</li>
+            </ol>
+            <!-- Captura: assets/windows-aviso.png -->
+          </article>
+        </div>
+        <p class="note">Después se actualiza sola.</p>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <span>Lucka · MIT</span>
+      <a href="https://github.com/juan-ramirez-dev/lucka">github.com/juan-ramirez-dev/lucka</a>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>
