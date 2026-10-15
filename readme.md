@@ -20,9 +20,15 @@ No hay que tocarlos al publicar una versión nueva.
 Tokens en el `<style>` de `index.html` (copia de `lucka/src/app/globals.css`).
 `styles.css` solo usa `var(--token)`.
 
+## Animaciones
+
+- El panel del hero es un mock en HTML. Los números son de ejemplo.
+- `main.js` simula gastos, reordena widgets y hace el scroll reveal.
+- Solo corre lo visible. Con "reducir movimiento" todo queda quieto.
+- Sin JS la página se ve completa, sin animaciones de scroll.
+
 ## Capturas pendientes
 
-- `assets/screenshot.png` → reemplaza el bloque "Captura de la app".
 - `assets/macos-aviso.png`, `assets/windows-aviso.png` → en "Primera vez".
 
 ## Ver local
