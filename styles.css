@@ -152,17 +152,39 @@ main,
   text-decoration: none;
 }
 
+/* Same drawing as the app icon (lucka/src-tauri/icons/source.svg), painted with the tokens. */
 .mark {
-  display: grid;
-  place-items: center;
+  display: block;
+  flex: none;
   width: 36px;
   height: 36px;
-  font-size: var(--text-md);
-  font-weight: 700;
-  color: var(--color-text-inverse);
-  background: var(--color-primary);
-  border-radius: var(--radius-sm);
   transition: transform var(--duration) var(--ease-out);
+}
+
+.mark-tile {
+  fill: var(--color-primary);
+}
+
+.mark-back {
+  fill: var(--color-mint);
+}
+
+.mark-back-rim {
+  fill: none;
+  stroke: var(--color-positive);
+  stroke-opacity: 0.35;
+}
+
+/* The tile-colored stroke opens the gap between the coins. */
+.mark-front {
+  fill: var(--color-surface);
+  stroke: var(--color-primary);
+}
+
+.mark-front-rim {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-opacity: 0.22;
 }
 
 .wordmark:hover .mark {
@@ -490,8 +512,6 @@ h1 mark {
   width: 28px;
   height: 28px;
   margin-bottom: var(--space-4);
-  font-size: var(--text-xs);
-  border-radius: 8px;
 }
 
 .side-link {
@@ -2493,8 +2513,6 @@ code {
 .mark-lg {
   width: 64px;
   height: 64px;
-  font-size: var(--text-xl);
-  border-radius: var(--radius-md);
   animation: spin-in 1s var(--ease-out) both;
 }
 
