@@ -6,7 +6,7 @@
     <title>Lucka — tus finanzas, en tu computador</title>
     <meta
       name="description"
-      content="Cuánto tengo disponible y en qué se me va el dinero. App de escritorio gratis para macOS y Windows. Tus datos nunca salen de tu computador."
+      content="Cuánto tengo disponible y en qué se me va el dinero. Registra gastos hablando. App de escritorio gratis para macOS y Windows. Tus datos nunca salen de tu computador."
     />
     <meta name="theme-color" content="#f4f3fb" />
 
@@ -14,7 +14,7 @@
     <meta property="og:title" content="Lucka — tus finanzas, en tu computador" />
     <meta
       property="og:description"
-      content="Cuánto tengo disponible y en qué se me va el dinero. Sin cuenta, sin nube."
+      content="Cuánto tengo disponible y en qué se me va el dinero. Registra gastos hablando. Sin cuenta, sin nube."
     />
     <meta property="og:url" content="https://juan-ramirez-dev.github.io/lucka-landing/" />
     <meta property="og:image" content="https://juan-ramirez-dev.github.io/lucka-landing/assets/icon.png" />
@@ -75,6 +75,7 @@
         <span class="mark" aria-hidden="true">L</span>Lucka
       </a>
       <nav class="top-nav">
+        <a class="top-link" href="#voz">Voz con IA</a>
         <a class="top-link" href="https://github.com/juan-ramirez-dev/lucka">Código</a>
         <a class="pill" href="#download">Descargar</a>
       </nav>
@@ -84,7 +85,7 @@
       <!-- Hero -->
       <section class="hero">
         <div class="hero-copy">
-          <p class="badge rise" style="--i: 0"><i class="pulse" aria-hidden="true"></i>Gratis · macOS y Windows</p>
+          <a class="badge rise" style="--i: 0" href="#voz"><i class="pulse" aria-hidden="true"></i>Nuevo: registra gastos hablando</a>
           <h1>
             <span class="rise" style="--i: 1">Cuánto tienes</span>
             <span class="rise" style="--i: 2">disponible,</span>
@@ -92,8 +93,8 @@
             <span class="rise" style="--i: 4"><mark>más lo vea.</mark></span>
           </h1>
           <p class="lead rise" style="--i: 5">
-            Lucka te dice cuánto te queda este mes y en qué se te va el dinero. Todo vive en tu computador: sin
-            cuenta, sin nube.
+            Lucka te dice cuánto te queda este mes y en qué se te va el dinero. Gratis para macOS y Windows. Todo
+            vive en tu computador: sin cuenta, sin nube.
           </p>
 
           <div class="download rise" style="--i: 6" id="download">
@@ -188,6 +189,229 @@
         </div>
       </section>
 
+      <!-- Voz con IA -->
+      <section class="section" id="voz">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">Nuevo · Registra hablando</p>
+          <h2>Dilo en voz alta. <span class="muted">Lucka lo anota.</span></h2>
+          <p class="lead">
+            Toca el micrófono y cuenta en qué gastaste. La IA lo convierte en registros. Nada se guarda hasta que tú
+            lo confirmas.
+          </p>
+        </header>
+
+        <div class="demo" id="demo" data-reveal style="--i: 1">
+          <div class="chapters" id="chapters">
+            <button class="chapter" type="button" data-chapter="0">
+              <i class="chapter-bar"><b></b></i>
+              <span class="chapter-n">1</span>
+              <strong>Habla</strong>
+              <small>Toca el micrófono y di todo de una: gastos, fijos pagados o plata que te entró.</small>
+            </button>
+            <button class="chapter" type="button" data-chapter="1">
+              <i class="chapter-bar"><b></b></i>
+              <span class="chapter-n">2</span>
+              <strong>Lucka entiende</strong>
+              <small>Whisper pasa tu voz a texto en tu equipo. Tu IA saca montos, categorías y fechas.</small>
+            </button>
+            <button class="chapter" type="button" data-chapter="2">
+              <i class="chapter-bar"><b></b></i>
+              <span class="chapter-n">3</span>
+              <strong>Revisa</strong>
+              <small>Ves un resumen. Corrige un monto, cambia la categoría o quita lo que sobra.</small>
+            </button>
+            <button class="chapter" type="button" data-chapter="3">
+              <i class="chapter-bar"><b></b></i>
+              <span class="chapter-n">4</span>
+              <strong>Listo</strong>
+              <small>Se guarda todo junto. El fijo queda pagado y tu disponible se actualiza.</small>
+            </button>
+          </div>
+
+          <div class="demo-stage">
+            <!-- Decorativo: los pasos de la izquierda cuentan lo mismo en texto. -->
+            <div class="screen" id="screen" aria-hidden="true">
+              <div class="app-bar"><i></i><i></i><i></i></div>
+              <div class="screen-body">
+                <div class="app-head">
+                  <div>
+                    <p class="app-title">Tu mes</p>
+                    <p class="app-cycle">Faltan <strong>12 días</strong> para el pago</p>
+                  </div>
+                </div>
+
+                <div class="app-grid">
+                  <section class="w">
+                    <p class="w-title">Disponible</p>
+                    <div class="ring">
+                      <svg viewBox="0 0 220 220">
+                        <g transform="rotate(-90 110 110)">
+                          <circle class="ring-track" cx="110" cy="110" r="92" />
+                          <circle class="ring-committed" id="v-committed" cx="110" cy="110" r="92" />
+                          <circle class="ring-spent" id="v-spent" cx="110" cy="110" r="92" />
+                        </g>
+                      </svg>
+                      <div class="ring-center">
+                        <p class="ring-label">Disponible</p>
+                        <p class="ring-amount" id="v-amount">$ 1.240.000</p>
+                        <p class="ring-sub" id="v-income">de $ 3.500.000</p>
+                      </div>
+                    </div>
+                  </section>
+
+                  <div class="app-col">
+                    <section class="w">
+                      <p class="w-title">Fijos</p>
+                      <ul class="v-fixed">
+                        <li class="is-paid"><i class="check"></i><span>Arriendo</span><b>$ 950.000</b></li>
+                        <li id="v-internet"><i class="check"></i><span>Internet</span><b>$ 90.000</b></li>
+                        <li><i class="check"></i><span>Gimnasio</span><b>$ 115.000</b></li>
+                      </ul>
+                    </section>
+
+                    <section class="w">
+                      <p class="w-title">Recientes</p>
+                      <ul class="recent">
+                        <li class="is-new" data-income><span class="toast-avatar">B</span><span>Bono</span><b>+$ 200.000</b></li>
+                        <li class="is-new"><span class="toast-avatar">I</span><span>Internet</span><b>−$ 90.000</b></li>
+                        <li class="is-new"><span class="toast-avatar">M</span><span>Mercado</span><b>−$ 45.000</b></li>
+                        <li><span class="toast-avatar">C</span><span>Café</span><b>−$ 12.000</b></li>
+                        <li><span class="toast-avatar">T</span><span>Taxi</span><b>−$ 23.000</b></li>
+                        <li><span class="toast-avatar">C</span><span>Cine</span><b>−$ 38.000</b></li>
+                      </ul>
+                    </section>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Lo que dice la persona, como subtítulo. -->
+              <p class="said" id="v-said">
+                <span class="said-wave"><i></i><i></i><i></i><i></i><i></i></span>
+                <span class="said-text" id="v-said-text"></span>
+              </p>
+
+              <div class="v-dock">
+                <span class="v-bubble" id="v-bubble">
+                  <b id="v-bubble-title">Escuchando lo que dijiste…</b>
+                  <small id="v-bubble-note">Whisper · en tu equipo</small>
+                </span>
+                <span class="v-fab">
+                  <svg class="v-mic" viewBox="0 0 24 24">
+                    <path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5 11a7 7 0 0 0 14 0M12 18v3" />
+                  </svg>
+                  <i class="v-stop"></i>
+                  <i class="v-spin"></i>
+                </span>
+              </div>
+
+              <div class="v-modal-wrap">
+                <div class="v-modal">
+                  <p class="v-eyebrow">Por voz</p>
+                  <p class="v-title">¿Guardo esto?</p>
+                  <p class="v-heard">«Gasté 45 mil en mercado, pagué el internet y me entró un bono de 200 mil»</p>
+                  <ul class="v-items">
+                    <li class="v-item">
+                      <span class="v-info">
+                        <b>Mercado</b>
+                        <span class="v-meta"><i class="v-tag">Gasto</i><span class="v-select">Mercado</span>Hoy</span>
+                      </span>
+                      <span class="v-money">$ 45.000</span>
+                    </li>
+                    <li class="v-item">
+                      <span class="v-info">
+                        <b>Internet</b>
+                        <span class="v-meta"><i class="v-tag" data-kind="fixed">Gasto fijo</i>Internet · Hoy</span>
+                      </span>
+                      <span class="v-money">$ 90.000</span>
+                    </li>
+                    <li class="v-item">
+                      <span class="v-info">
+                        <b>Bono</b>
+                        <span class="v-meta"><i class="v-tag" data-kind="income">Ingreso</i>Hoy</span>
+                      </span>
+                      <span class="v-money">$ 200.000</span>
+                    </li>
+                  </ul>
+                  <div class="v-actions">
+                    <span class="v-save" id="v-save">Guardar 3 registros</span>
+                    <span class="v-ghost">Descartar</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="toast v-toast">
+                <span class="toast-avatar">
+                  <svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10" /></svg>
+                </span>
+                <span class="toast-text"><b>3 registros guardados</b><small>Por voz</small></span>
+              </div>
+
+              <span class="cursor" id="v-cursor"></span>
+            </div>
+
+            <button class="demo-play" id="demo-play" type="button" aria-label="Pausar demo" hidden>
+              <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12" /></svg>
+              <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10-6.5z" /></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Qué IA usar -->
+      <section class="section" id="tu-ia">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">Tu IA, tú eliges</p>
+          <h2>Privada en tu equipo <span class="muted">o con tu propia key.</span></h2>
+          <p class="lead">La configuras una vez, la primera vez que la abres. Puedes cambiarla luego en Ajustes.</p>
+        </header>
+
+        <div class="cards">
+          <article class="card" data-reveal style="--i: 0">
+            <div class="card-art voice-art" aria-hidden="true">
+              <span class="voice-core">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5 11a7 7 0 0 0 14 0M12 18v3" />
+                </svg>
+              </span>
+              <span class="voice-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+              <span class="vault-file">El audio no sale</span>
+            </div>
+            <h3>Tu voz se queda contigo</h3>
+            <p>Whisper pasa la voz a texto dentro de tu computador. Siempre. Se baja una vez (unos 490 MB).</p>
+          </article>
+
+          <article class="card" data-reveal style="--i: 1">
+            <div class="card-art model-art" aria-hidden="true">
+              <span class="model-card">
+                <span class="model-name"><b>Qwen 2.5 3B</b><small>Recomendado</small></span>
+                <i class="bar"><b class="mint" style="--v: 100%"></b></i>
+                <small class="model-done">Descargado · 2,1 GB</small>
+              </span>
+              <span class="vault-file">Sin internet</span>
+            </div>
+            <h3>IA en tu equipo</h3>
+            <p>100% privado: nada sale de tu computador. Ocupa espacio en disco y tarda unos segundos por frase.</p>
+          </article>
+
+          <article class="card" data-reveal style="--i: 2">
+            <div class="card-art keys-art" aria-hidden="true">
+              <span class="chip" style="--i: 0">OpenAI</span>
+              <span class="chip chip-primary" style="--i: 1">Claude</span>
+              <span class="chip" style="--i: 2">Gemini</span>
+              <span class="key-pill">
+                <svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="4" /><path d="M11 12l9-9M16 7l3 3" /></svg>
+                En el llavero del sistema
+              </span>
+            </div>
+            <h3>O con tu key</h3>
+            <p>
+              Pega tu key de OpenAI, Claude o Gemini. Se guarda en el llavero del sistema, nunca en Lucka ni en los
+              respaldos. Al proveedor solo va el texto y los nombres de tus categorías.
+            </p>
+          </article>
+        </div>
+      </section>
+
       <!-- Qué hace -->
       <section class="section">
         <header class="section-head" data-reveal>
@@ -236,10 +460,10 @@
       <section class="section split">
         <div class="split-copy" data-reveal>
           <p class="eyebrow">Tu panel, a tu manera</p>
-          <h2>Mueve, oculta y ordena <span class="muted">lo que te importa.</span></h2>
+          <h2>Mueve, ajusta y ordena <span class="muted">lo que te importa.</span></h2>
           <p class="lead">
-            Cada bloque del panel es un widget. Arrástralo, escóndelo o tráelo de vuelta. Para anotar algo, un solo
-            botón: Gasto o Ingreso.
+            Cada bloque del panel es un widget. Arrástralo, cámbiale el tamaño, escóndelo o tráelo de vuelta. Para
+            anotar algo, un botón o tu voz.
           </p>
           <button class="toggle" id="edit-toggle" type="button" aria-pressed="true">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h10M4 19h6" /></svg>
@@ -310,7 +534,8 @@
           </article>
         </div>
         <p class="note note-center" data-reveal>
-          <i class="pulse" aria-hidden="true"></i>Después se actualiza sola.
+          <i class="pulse" aria-hidden="true"></i>Después se actualiza sola. Para la voz, pide permiso del micrófono
+          una vez.
         </p>
       </section>
 

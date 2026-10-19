@@ -1,36 +1,50 @@
 # Lucka · landing
 
-Página de descarga de [Lucka](https://github.com/juan-ramirez-dev/lucka).
+Download page for [Lucka](https://github.com/juan-ramirez-dev/lucka), a local-first personal finance desktop app for macOS and Windows.
 
-- HTML + CSS estático. Sin build.
-- Publica sola en GitHub Pages al hacer push a `main`.
-- URL: https://juan-ramirez-dev.github.io/lucka-landing/
+**Live:** [juan-ramirez-dev.github.io/lucka-landing](https://juan-ramirez-dev.github.io/lucka-landing/)
 
-## Links de descarga
+[![Voice entry demo: speak, Lucka understands, you review, it saves](assets/demo-voz.gif)](assets/demo-voz.mp4)
 
-Apuntan al último Release de la app, con nombre fijo:
+_Voice entry in four steps. [Full-quality MP4](assets/demo-voz.mp4) (1080p, 21 s)._
 
-- `releases/latest/download/Lucka-macos.dmg`
-- `releases/latest/download/Lucka-windows-setup.exe`
+## What's on the page
 
-No hay que tocarlos al publicar una versión nueva.
+- **Hero** with a live mock of the dashboard: expenses get registered and the ring updates.
+- **Voice entry demo** (`#voz`): the app's real flow in 4 clickable steps, with pause.
+  - Speak → Whisper transcribes on-device → AI extracts records → review → save.
+- **Choose your AI:** Whisper always local; Qwen on-device or your own OpenAI / Anthropic / Gemini key.
+- **Features**, customizable widgets, and first-launch steps for unsigned builds.
+- Download button picks macOS or Windows from the user agent.
 
-## Colores
+## Tech stack
 
-Tokens en el `<style>` de `index.html` (copia de `lucka/src/app/globals.css`).
-`styles.css` solo usa `var(--token)`.
+| Layer     | Tech                                                 |
+| --------- | ---------------------------------------------------- |
+| Page      | Plain HTML, CSS and JS. No build, no dependencies    |
+| Design    | Same tokens as the app (copy of `globals.css`)       |
+| Hosting   | GitHub Pages, deployed by GitHub Actions on `main`   |
+| Downloads | Fixed-name assets on the app's latest GitHub Release |
 
-## Animaciones
+## Engineering highlights
 
-- El panel del hero es un mock en HTML. Los números son de ejemplo.
-- `main.js` simula gastos, reordena widgets y hace el scroll reveal.
-- Solo corre lo visible. Con "reducir movimiento" todo queda quieto.
-- Sin JS la página se ve completa, sin animaciones de scroll.
+- **Mocks, not screenshots.** The dashboard and voice demo are HTML, so they stay sharp at any size and change with a text edit.
+- **Timeline as a pure function.** The voice demo is `render(t)`: pause, seek and step jumps just change `t`. CSS transitions do the smoothing.
+- **Cheap when idle.** Animations only run while visible and the tab is active.
+- **Accessible by default.** Reduced motion turns each step into a still frame. Without JS the page is complete. The mock is `aria-hidden`; the steps tell the same story as text.
+- **Release-proof links.** `releases/latest/download/Lucka-macos.dmg` and `Lucka-windows-setup.exe` never change between versions.
 
-## Capturas pendientes
+## Project notes
 
-- `assets/macos-aviso.png`, `assets/windows-aviso.png` → en "Primera vez".
+- Colors: tokens in the `<style>` of `index.html`. `styles.css` only uses `var(--token)`.
+- Voice demo timings live in `main.js`. If the flow changes in the app, update them there.
+- The video was recorded from the page itself, frame by frame (headless Chrome + ffmpeg). If the demo changes, re-record `assets/demo-voz.mp4` and `assets/demo-voz.gif`.
+- Pending screenshots: `assets/macos-aviso.png`, `assets/windows-aviso.png` → "Primera vez" section.
 
-## Ver local
+## Run locally
 
-Abrir `index.html` en el navegador.
+Open `index.html` in a browser.
+
+## License
+
+MIT
