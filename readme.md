@@ -24,7 +24,10 @@ Tokens en el `<style>` de `index.html` (copia de `lucka/src/app/globals.css`).
 
 - El panel del hero es un mock en HTML. Los números son de ejemplo.
 - `main.js` simula gastos, reordena widgets y hace el scroll reveal.
-- Solo corre lo visible. Con "reducir movimiento" todo queda quieto.
+- Demo de voz (`#voz`): una línea de tiempo en `main.js`.
+  - Todo sale de `render(t)`. Pausar o saltar a un paso = cambiar `t`.
+  - Los tiempos de cada escena están ahí mismo. Si cambia el flujo en la app, se ajustan ahí.
+- Solo corre lo visible. Con "reducir movimiento" todo queda quieto: los pasos muestran una foto fija.
 - Sin JS la página se ve completa, sin animaciones de scroll.
 
 ## Capturas pendientes

@@ -225,3 +225,199 @@ whileVisible(board, on => {
   boardOn = on
   syncBoard()
 })
+
+/* ---------- Demo de voz ---------- */
+
+// Todo sale de render(t): pausar o saltar a un paso es solo cambiar t.
+const demoScreen = document.getElementById('screen')
+const v = {
+  amount: document.getElementById('v-amount'),
+  income: document.getElementById('v-income'),
+  spentArc: document.getElementById('v-spent'),
+  committedArc: document.getElementById('v-committed'),
+  internet: document.getElementById('v-internet'),
+  news: [...demoScreen.querySelectorAll('.recent .is-new')],
+  saidText: document.getElementById('v-said-text'),
+  bubbleTitle: document.getElementById('v-bubble-title'),
+  bubbleNote: document.getElementById('v-bubble-note'),
+  items: [...demoScreen.querySelectorAll('.v-item')],
+  save: document.getElementById('v-save'),
+  fab: demoScreen.querySelector('.v-fab'),
+  cursor: document.getElementById('v-cursor'),
+  play: document.getElementById('demo-play'),
+  chapters: [...document.querySelectorAll('.chapter')],
+}
+
+const END = 20800
+const CHAPTERS = [0, 6800, 11000, 15300]
+// Con "reducir movimiento": el momento que mejor resume cada paso.
+const STILLS = [5800, 10300, 14200, 19000]
+const CLICKS = [1300, 6900, 15400]
+
+const SAID = [
+  ['Gasté '],
+  ['45 mil en mercado', 'expense'],
+  [', '],
+  ['pagué el internet', 'fixed'],
+  [' y me entró un '],
+  ['bono de 200 mil', 'income'],
+]
+const SAID_LEN = SAID.reduce((n, [text]) => n + text.length, 0)
+
+// Antes y después de guardar: +45.000 mercado, +90.000 internet (deja de estar comprometido), +200.000 bono.
+const BEFORE = { income: 3500000, spent: 1050000, committed: 1210000 }
+const AFTER = { income: 3700000, spent: 1185000, committed: 1120000 }
+const availableOf = s => s.income - s.spent - s.committed
+
+const clamp = x => Math.min(Math.max(x, 0), 1)
+const ease = p => 1 - Math.pow(1 - p, 3)
+
+function setFlag(name, on) {
+  if (demoScreen.hasAttribute(name) !== on) demoScreen.toggleAttribute(name, on)
+}
+
+function setText(el, text) {
+  if (el.textContent !== text) el.textContent = text
+}
+
+let saidShown = -1
+function paintSaid(n) {
+  if (n === saidShown) return
+  saidShown = n
+  let left = n
+  v.saidText.replaceChildren(
+    ...SAID.map(([text, kind]) => {
+      const part = text.slice(0, Math.max(left, 0))
+      left -= text.length
+      if (!kind) return part
+      const mark = document.createElement('mark')
+      mark.dataset.kind = kind
+      mark.textContent = part
+      return mark
+    }),
+  )
+}
+
+let ringDone = null
+function paintScreenRing(done) {
+  if (done === ringDone) return
+  ringDone = done
+  const s = done ? AFTER : BEFORE
+  const spentLen = (s.spent / s.income) * C
+  v.spentArc.style.strokeDasharray = `${spentLen} ${C}`
+  v.committedArc.style.strokeDasharray = `${(s.committed / s.income) * C} ${C}`
+  v.committedArc.style.strokeDashoffset = `${-spentLen}`
+}
+
+const cursorTargets = {
+  fab: () => v.fab,
+  item: () => v.items[0].querySelector('.v-money'),
+  save: () => v.save,
+}
+
+function placeCursor(target) {
+  const s = demoScreen.getBoundingClientRect()
+  let x = s.width * 0.45
+  let y = s.height * 0.86
+  if (target) {
+    const r = cursorTargets[target]().getBoundingClientRect()
+    x = r.left - s.left + r.width * 0.55
+    y = r.top - s.top + r.height * 0.6
+  }
+  v.cursor.style.setProperty('--x', `${Math.round(x)}px`)
+  v.cursor.style.setProperty('--y', `${Math.round(y)}px`)
+}
+
+function render(t) {
+  const on = (a, b = Infinity) => t >= a && t < b
+
+  setFlag('data-fade', t < 250 || t >= END - 450)
+
+  const fab = on(1300, 6900) ? 'recording' : on(6900, 11000) ? 'busy' : 'idle'
+  if (demoScreen.dataset.fab !== fab) demoScreen.dataset.fab = fab
+
+  setFlag('data-said', on(1300, 11000))
+  paintSaid(Math.round(clamp((t - 1700) / 4500) * SAID_LEN))
+  setFlag('data-parsed', on(9000, 11000))
+
+  setFlag('data-bubble', on(6900, 11000))
+  const listening = t < 9000
+  setText(v.bubbleTitle, listening ? 'Escuchando lo que dijiste…' : 'Entendiendo…')
+  setText(v.bubbleNote, listening ? 'Whisper · en tu equipo' : 'Tu IA · local o con tu key')
+
+  setFlag('data-modal', on(11000, 15800))
+  v.items.forEach((el, i) => el.classList.toggle('is-in', t >= 11400 + i * 350))
+  v.items[0].classList.toggle('is-focus', on(12500, 13600))
+  v.save.classList.toggle('is-press', on(15400, 15800))
+  setText(v.save, on(15400) ? 'Guardando…' : 'Guardar 3 registros')
+
+  const done = t >= 15900
+  v.internet.classList.toggle('is-paid', done)
+  v.news.forEach((el, i) => el.classList.toggle('is-in', t >= 16200 + i * 220))
+  setFlag('data-toast', on(16300, 19800))
+  paintScreenRing(done)
+  const from = availableOf(BEFORE)
+  const to = availableOf(AFTER)
+  setText(v.amount, money.format(Math.round(from + (to - from) * ease(clamp((t - 16100) / 1000)))))
+  setText(v.income, `de ${money.format((done ? AFTER : BEFORE).income)}`)
+
+  const target = on(300, 11800) ? 'fab' : on(11800, 13700) ? 'item' : on(13700, 16000) ? 'save' : null
+  placeCursor(target)
+
+  const current = CHAPTERS.findLastIndex(start => t >= start)
+  v.chapters.forEach((el, i) => {
+    const end = CHAPTERS[i + 1] ?? END
+    const p = calm ? Number(i === current) : clamp((t - CHAPTERS[i]) / (end - CHAPTERS[i]))
+    el.querySelector('.chapter-bar b').style.setProperty('--p', p.toFixed(3))
+    if (i === current) el.setAttribute('aria-current', 'step')
+    else el.removeAttribute('aria-current')
+  })
+}
+
+let t = calm ? STILLS[0] : 0
+let playing = !calm
+let inView = false
+let raf = 0
+let last = 0
+
+function frame(now) {
+  const prev = t
+  t += last ? Math.min(now - last, 100) : 0
+  last = now
+  if (t >= END) t = 0
+  else if (CLICKS.some(c => prev < c && c <= t)) restart(v.cursor, 'is-click')
+  render(t)
+  raf = requestAnimationFrame(frame)
+}
+
+function syncDemo() {
+  cancelAnimationFrame(raf)
+  last = 0
+  if (playing && inView) raf = requestAnimationFrame(frame)
+  v.play.setAttribute('aria-pressed', String(playing))
+  v.play.setAttribute('aria-label', playing ? 'Pausar demo' : 'Reproducir demo')
+}
+
+v.chapters.forEach((el, i) =>
+  el.addEventListener('click', () => {
+    t = calm ? STILLS[i] : CHAPTERS[i]
+    playing = !calm
+    render(t)
+    syncDemo()
+  }),
+)
+
+if (!calm) {
+  v.play.hidden = false
+  v.play.addEventListener('click', () => {
+    playing = !playing
+    syncDemo()
+  })
+}
+
+addEventListener('resize', () => render(t))
+render(t)
+whileVisible(demoScreen, visible => {
+  inView = visible
+  syncDemo()
+})
