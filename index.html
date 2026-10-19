@@ -29,7 +29,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     />
-    <!-- Mismos tokens que la app (lucka/src/app/globals.css). Único lugar con colores literales. -->
+    <!-- Same tokens as the app (lucka/src/app/globals.css). The only place with literal colors. -->
     <style>
       :root {
         color-scheme: light;
@@ -57,7 +57,7 @@
         --shadow-lg: 0 24px 64px rgb(20 20 31 / 0.18);
       }
     </style>
-    <!-- Sin JS todo se ve; con JS las secciones entran al hacer scroll. -->
+    <!-- Without JS everything shows; with JS the sections slide in on scroll. -->
     <script>
       document.documentElement.classList.add('js')
     </script>
@@ -75,7 +75,7 @@
         <svg class="mark" viewBox="0 0 1024 1024" aria-hidden="true"><rect class="mark-tile" width="1024" height="1024" rx="284" /><circle class="mark-back" cx="612" cy="412" r="232" /><circle class="mark-back-rim" cx="612" cy="412" r="176" stroke-width="20" /><circle class="mark-front" cx="420" cy="604" r="266" stroke-width="28" /><circle class="mark-front-rim" cx="420" cy="604" r="192" stroke-width="22" /></svg>Lucka
       </a>
       <nav class="top-nav">
-        <a class="top-link" href="#voz">Voz con IA</a>
+        <a class="top-link" href="#voice">Voz con IA</a>
         <a class="top-link" href="https://github.com/juan-ramirez-dev/lucka">Código</a>
         <a class="pill" href="#download">Descargar</a>
       </nav>
@@ -85,7 +85,7 @@
       <!-- Hero -->
       <section class="hero">
         <div class="hero-copy">
-          <a class="badge rise" style="--i: 0" href="#voz"><i class="pulse" aria-hidden="true"></i>Nuevo: registra gastos hablando</a>
+          <a class="badge rise" style="--i: 0" href="#voice"><i class="pulse" aria-hidden="true"></i>Nuevo: registra gastos hablando</a>
           <h1>
             <span class="rise" style="--i: 1">Cuánto tienes</span>
             <span class="rise" style="--i: 2">disponible,</span>
@@ -109,7 +109,7 @@
           </div>
         </div>
 
-        <!-- Mock vivo del panel. Decorativo: los números son de ejemplo. -->
+        <!-- Live dashboard mock. Decorative: the numbers are examples. -->
         <div class="stage rise" style="--i: 3" aria-hidden="true">
           <div class="app" id="app">
             <div class="app-bar"><i></i><i></i><i></i></div>
@@ -189,8 +189,8 @@
         </div>
       </section>
 
-      <!-- Voz con IA -->
-      <section class="section" id="voz">
+      <!-- Voice with AI -->
+      <section class="section" id="voice">
         <header class="section-head" data-reveal>
           <p class="eyebrow">Nuevo · Registra hablando</p>
           <h2>Dilo en voz alta. <span class="muted">Lucka lo anota.</span></h2>
@@ -229,7 +229,7 @@
           </div>
 
           <div class="demo-stage">
-            <!-- Decorativo: los pasos de la izquierda cuentan lo mismo en texto. -->
+            <!-- Decorative: the steps on the left tell the same story in text. -->
             <div class="screen" id="screen" aria-hidden="true">
               <div class="app-bar"><i></i><i></i><i></i></div>
               <div class="screen-body">
@@ -284,7 +284,7 @@
                 </div>
               </div>
 
-              <!-- Lo que dice la persona, como subtítulo. -->
+              <!-- What the person says, as a subtitle. -->
               <p class="said" id="v-said">
                 <span class="said-wave"><i></i><i></i><i></i><i></i><i></i></span>
                 <span class="said-text" id="v-said-text"></span>
@@ -357,8 +357,8 @@
         </div>
       </section>
 
-      <!-- Qué IA usar -->
-      <section class="section" id="tu-ia">
+      <!-- Which AI to use -->
+      <section class="section" id="your-ai">
         <header class="section-head" data-reveal>
           <p class="eyebrow">Tu IA, tú eliges</p>
           <h2>Privada en tu equipo <span class="muted">o con tu propia key.</span></h2>
@@ -412,7 +412,7 @@
         </div>
       </section>
 
-      <!-- Qué hace -->
+      <!-- What it does -->
       <section class="section">
         <header class="section-head" data-reveal>
           <p class="eyebrow">Qué hace</p>
@@ -441,7 +441,7 @@
             <p>Marca el arriendo como pagado. Ve cuánto te queda en mercado o salidas.</p>
           </article>
 
-          <article class="card" data-reveal style="--i: 2" id="privacidad">
+          <article class="card" data-reveal style="--i: 2" id="privacy">
             <div class="card-art vault" aria-hidden="true">
               <span class="vault-ring"></span>
               <span class="vault-ring vault-ring-2"></span>
@@ -498,8 +498,8 @@
         </div>
       </section>
 
-      <!-- Primera vez -->
-      <section class="section" id="primera-vez">
+      <!-- First launch -->
+      <section class="section" id="first-launch">
         <header class="section-head" data-reveal>
           <p class="eyebrow">Primera vez que la abres</p>
           <h2>Tu sistema te va a avisar. <span class="muted">Es normal.</span></h2>
@@ -517,7 +517,7 @@
               <li>Ábrela. Sale un aviso: dale <strong>Listo</strong>.</li>
               <li>Ajustes del Sistema → Privacidad y seguridad → <strong>Abrir igualmente</strong>.</li>
             </ol>
-            <!-- Captura: assets/macos-aviso.png -->
+            <!-- Screenshot: assets/macos-warning.png -->
             <details>
               <summary>Si eres técnico</summary>
               <pre><code>xattr -dr com.apple.quarantine /Applications/Lucka.app</code></pre>
@@ -530,7 +530,7 @@
               <li>Sale “Windows protegió su PC”: clic en <strong>Más información</strong>.</li>
               <li>Clic en <strong>Ejecutar de todas formas</strong>.</li>
             </ol>
-            <!-- Captura: assets/windows-aviso.png -->
+            <!-- Screenshot: assets/windows-warning.png -->
           </article>
         </div>
         <p class="note note-center" data-reveal>
@@ -539,7 +539,7 @@
         </p>
       </section>
 
-      <!-- Cierre -->
+      <!-- Closing -->
       <section class="cta" data-reveal>
         <svg class="mark mark-lg" viewBox="0 0 1024 1024" aria-hidden="true"><rect class="mark-tile" width="1024" height="1024" rx="284" /><circle class="mark-back" cx="612" cy="412" r="232" /><circle class="mark-back-rim" cx="612" cy="412" r="176" stroke-width="20" /><circle class="mark-front" cx="420" cy="604" r="266" stroke-width="28" /><circle class="mark-front-rim" cx="420" cy="604" r="192" stroke-width="22" /></svg>
         <h2>Tu dinero, en orden <span class="muted">y solo para tus ojos.</span></h2>

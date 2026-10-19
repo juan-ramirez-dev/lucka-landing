@@ -1,4 +1,4 @@
-// Botón principal según el sistema. El otro queda como link debajo.
+// Main button for the visitor's OS. The other one stays as a link below.
 const MAC = 'https://github.com/juan-ramirez-dev/lucka/releases/latest/download/Lucka-macos.dmg'
 const WIN = 'https://github.com/juan-ramirez-dev/lucka/releases/latest/download/Lucka-windows-setup.exe'
 
@@ -23,7 +23,7 @@ if (isWindows) {
 
 const calm = matchMedia('(prefers-reduced-motion: reduce)').matches
 
-// Secciones que entran al hacer scroll.
+// Sections that slide in on scroll.
 const revealer = new IntersectionObserver(
   entries => {
     for (const entry of entries) {
@@ -36,7 +36,7 @@ const revealer = new IntersectionObserver(
 )
 document.querySelectorAll('[data-reveal]').forEach(el => revealer.observe(el))
 
-// Solo corre lo que está en pantalla y con la pestaña visible.
+// Only runs what's on screen, with the tab visible.
 function whileVisible(el, onChange) {
   let visible = false
   const update = () => onChange(visible && !document.hidden)
@@ -47,13 +47,13 @@ function whileVisible(el, onChange) {
   document.addEventListener('visibilitychange', update)
 }
 
-/* ---------- Demo en vivo del panel ---------- */
+/* ---------- Live dashboard demo ---------- */
 
 const money = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 })
 const C = 2 * Math.PI * 92
 const COMMITTED = 1210000
 
-// El ingreso extra cierra el ciclo: al final todo vuelve al punto de partida.
+// The extra income closes the loop: at the end everything is back where it started.
 const EVENTS = [
   { title: 'Mercado', amount: 45000 },
   { title: 'Café', amount: 12000 },
@@ -81,7 +81,7 @@ const els = {
 const available = () => state.income - state.spent - COMMITTED
 
 function countTo(el, from, to, ms = 700) {
-  // t0 sale del primer frame: su hora puede ser anterior a performance.now().
+  // t0 comes from the first frame: its time can be earlier than performance.now().
   let t0 = 0
   const step = now => {
     t0 ||= now
@@ -137,7 +137,7 @@ if (!calm) {
   let timer = 0
   const tick = () => {
     if (i === EVENTS.length) {
-      // Vuelta silenciosa al inicio. Disponible no cambia, así que no se nota.
+      // Silent reset to the start. Available doesn't change, so nobody notices.
       Object.assign(state, start)
       els.sub.textContent = `de ${money.format(state.income)}`
       els.spentStat.textContent = money.format(state.spent)
@@ -154,7 +154,7 @@ if (!calm) {
   })
 }
 
-/* ---------- Inclinación 3D del mock con el mouse ---------- */
+/* ---------- 3D tilt of the mock with the mouse ---------- */
 
 const stage = document.querySelector('.stage')
 const app = document.getElementById('app')
@@ -173,13 +173,13 @@ if (!calm && matchMedia('(pointer: fine)').matches) {
   })
 }
 
-/* ---------- Widgets que se reordenan solos ---------- */
+/* ---------- Widgets that reorder themselves ---------- */
 
 const board = document.getElementById('board')
 const toggle = document.getElementById('edit-toggle')
 const toggleLabel = document.getElementById('edit-label')
 
-// FLIP: mide, mueve en el DOM y anima desde la posición vieja.
+// FLIP: measure, move in the DOM, animate from the old position.
 function swapRandom() {
   const tiles = [...board.children]
   const a = Math.floor(Math.random() * tiles.length)
@@ -226,9 +226,9 @@ whileVisible(board, on => {
   syncBoard()
 })
 
-/* ---------- Demo de voz ---------- */
+/* ---------- Voice demo ---------- */
 
-// Todo sale de render(t): pausar o saltar a un paso es solo cambiar t.
+// Everything comes from render(t): pausing or jumping to a step only changes t.
 const demoScreen = document.getElementById('screen')
 const v = {
   amount: document.getElementById('v-amount'),
@@ -250,7 +250,7 @@ const v = {
 
 const END = 20800
 const CHAPTERS = [0, 6800, 11000, 15300]
-// Con "reducir movimiento": el momento que mejor resume cada paso.
+// With "reduce motion": the moment that best sums up each step.
 const STILLS = [5800, 10300, 14200, 19000]
 const CLICKS = [1300, 6900, 15400]
 
@@ -264,7 +264,7 @@ const SAID = [
 ]
 const SAID_LEN = SAID.reduce((n, [text]) => n + text.length, 0)
 
-// Antes y después de guardar: +45.000 mercado, +90.000 internet (deja de estar comprometido), +200.000 bono.
+// Before and after saving: +45,000 groceries, +90,000 internet (no longer committed), +200,000 bonus.
 const BEFORE = { income: 3500000, spent: 1050000, committed: 1210000 }
 const AFTER = { income: 3700000, spent: 1185000, committed: 1120000 }
 const availableOf = s => s.income - s.spent - s.committed

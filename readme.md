@@ -11,7 +11,7 @@ _Voice entry in four steps. [Full-quality MP4](assets/demo-voz.mp4) (1080p, 21 s
 ## What's on the page
 
 - **Hero** with a live mock of the dashboard: expenses get registered and the ring updates.
-- **Voice entry demo** (`#voz`): the app's real flow in 4 clickable steps, with pause.
+- **Voice entry demo** (`#voice`): the app's real flow in 4 clickable steps, with pause.
   - Speak → Whisper transcribes on-device → AI extracts records → review → save.
 - **Choose your AI:** Whisper always local; Qwen on-device or your own OpenAI / Anthropic / Gemini key.
 - **Features**, customizable widgets, and first-launch steps for unsigned builds.
@@ -39,7 +39,7 @@ _Voice entry in four steps. [Full-quality MP4](assets/demo-voz.mp4) (1080p, 21 s
 - Colors: tokens in the `<style>` of `index.html`. `styles.css` only uses `var(--token)`.
 - Voice demo timings live in `main.js`. If the flow changes in the app, update them there.
 - The video was recorded from the page itself, frame by frame (headless Chrome + ffmpeg). If the demo changes, re-record `assets/demo-voz.mp4` and `assets/demo-voz.gif`.
-- Pending screenshots: `assets/macos-aviso.png`, `assets/windows-aviso.png` → "Primera vez" section.
+- Pending screenshots: `assets/macos-warning.png`, `assets/windows-warning.png` → "First launch" section.
 
 ## Run locally
 

@@ -25,15 +25,15 @@ jobs:
       - name: ⬇️ Checkout
         uses: actions/checkout@v4
 
-      - name: ⚙️ Configurar Pages
+      - name: ⚙️ Configure Pages
         uses: actions/configure-pages@v5
 
-      # Sin build: se sube el repo tal cual, sin la carpeta .github.
-      - name: 📦 Empaquetar
+      # No build: the repo is uploaded as is, without the .github folder.
+      - name: 📦 Package
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
 
-      - name: 🚀 Publicar
+      - name: 🚀 Publish
         id: deploy
         uses: actions/deploy-pages@v4
