@@ -242,6 +242,46 @@ main,
   background: var(--color-primary);
 }
 
+/* Language switch: two short pills, the current one filled. */
+.lang {
+  display: inline-flex;
+  padding: 3px;
+  background: var(--color-surface);
+  border: var(--line-soft);
+  border-radius: var(--radius-full);
+}
+
+.lang-option {
+  min-width: 34px;
+  padding: var(--space-1) var(--space-2);
+  font: inherit;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease),
+    background var(--duration-fast) var(--ease);
+}
+
+.lang-option:hover {
+  color: var(--color-text);
+}
+
+.lang-option[aria-pressed="true"] {
+  color: var(--color-text-inverse);
+  background: var(--color-ink);
+}
+
+/* Set by the head script until i18n.js has translated the page. */
+.i18n-wait body {
+  visibility: hidden;
+}
+
 /* Hero */
 .hero {
   display: grid;
