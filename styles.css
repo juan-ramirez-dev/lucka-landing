@@ -1019,6 +1019,7 @@ h2 {
   font-weight: 800;
   line-height: 1.08;
   letter-spacing: -0.03em;
+  text-wrap: balance;
 }
 
 .muted {
@@ -2449,6 +2450,42 @@ html:not(.js) .said {
     margin-top: 0 !important;
     font-size: var(--text-md);
   }
+}
+
+/* How it's built: the architecture video and the way to the code. */
+.built {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.built-video {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: var(--color-surface);
+  border: var(--line-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.built-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-6);
+}
+
+/* A filled mark, unlike the page's line icons. */
+.button .github {
+  fill: currentColor;
+  stroke: none;
+}
+
+.built-note {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
 }
 
 /* First launch */

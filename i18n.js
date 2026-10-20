@@ -135,7 +135,7 @@ const I18N = (() => {
       'built.title': 'How it’s built, <span class="muted">in 100 seconds.</span>',
       'built.lead':
         'A TypeScript UI in a Rust shell, a SQLite file on your disk and AI that can run offline. Every line is on GitHub.',
-      'built.note': 'Video in English.',
+      'built.note': '1080p · 101 s',
       'built.repo': 'See the code on GitHub',
       'built.docs': 'Read the architecture',
 
@@ -291,7 +291,7 @@ const I18N = (() => {
       'built.title': 'Cómo está hecha, <span class="muted">en 100 segundos.</span>',
       'built.lead':
         'Una interfaz en TypeScript dentro de un shell en Rust, un archivo SQLite en tu disco e IA que puede correr sin internet. Todo el código está en GitHub.',
-      'built.note': 'Video en inglés.',
+      'built.note': 'Video en inglés · 1080p · 101 s',
       'built.repo': 'Ver el código en GitHub',
       'built.docs': 'Leer la arquitectura',
 
