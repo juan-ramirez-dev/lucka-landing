@@ -1,20 +1,20 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Lucka — tus finanzas, en tu computador</title>
+    <title>Lucka — your finances, on your computer</title>
     <meta
       name="description"
-      content="Cuánto tengo disponible y en qué se me va el dinero. Registra gastos hablando. App de escritorio gratis para macOS y Windows. Tus datos nunca salen de tu computador."
+      content="How much you have left and where your money goes. Record expenses by talking. Free desktop app for macOS and Windows. Your data never leaves your computer."
     />
     <meta name="theme-color" content="#f4f3fb" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Lucka — tus finanzas, en tu computador" />
+    <meta property="og:title" content="Lucka — your finances, on your computer" />
     <meta
       property="og:description"
-      content="Cuánto tengo disponible y en qué se me va el dinero. Registra gastos hablando. Sin cuenta, sin nube."
+      content="How much you have left and where your money goes. Record expenses by talking. No account, no cloud."
     />
     <meta property="og:url" content="https://juan-ramirez-dev.github.io/lucka-landing/" />
     <meta property="og:image" content="https://juan-ramirez-dev.github.io/lucka-landing/assets/icon.png" />
@@ -29,7 +29,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     />
-    <!-- Mismos tokens que la app (lucka/src/app/globals.css). Único lugar con colores literales. -->
+    <!-- Same tokens as the app (lucka/src/app/globals.css). The only place with literal colors. -->
     <style>
       :root {
         color-scheme: light;
@@ -57,9 +57,26 @@
         --shadow-lg: 0 24px 64px rgb(20 20 31 / 0.18);
       }
     </style>
-    <!-- Sin JS todo se ve; con JS las secciones entran al hacer scroll. -->
+    <!-- Without JS everything shows, in English. With JS the sections slide in on scroll,
+         and a visitor who reads Spanish gets it before the first paint (see i18n.js). -->
     <script>
       document.documentElement.classList.add('js')
+      ;(() => {
+        const supported = l => l === 'en' || l === 'es'
+        let lang = new URLSearchParams(location.search).get('lang')
+        try {
+          if (!supported(lang)) lang = localStorage.getItem('lucka-lang')
+        } catch {}
+        if (!supported(lang)) {
+          const tag = (navigator.languages ?? [navigator.language]).find(l =>
+            supported(String(l).toLowerCase().split('-')[0]),
+          )
+          lang = tag ? String(tag).toLowerCase().split('-')[0] : 'en'
+        }
+        if (lang === 'en') return
+        document.documentElement.classList.add('i18n-wait')
+        setTimeout(() => document.documentElement.classList.remove('i18n-wait'), 1500)
+      })()
     </script>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -71,13 +88,17 @@
     </div>
 
     <header class="top">
-      <a class="wordmark" href="#" aria-label="Lucka, inicio">
-        <span class="mark" aria-hidden="true">L</span>Lucka
+      <a class="wordmark" href="#" aria-label="Lucka, home" data-i18n-attr="aria-label:top.home">
+        <svg class="mark" viewBox="0 0 1024 1024" aria-hidden="true"><rect class="mark-tile" width="1024" height="1024" rx="284" /><circle class="mark-back" cx="612" cy="412" r="232" /><circle class="mark-back-rim" cx="612" cy="412" r="176" stroke-width="20" /><circle class="mark-front" cx="420" cy="604" r="266" stroke-width="28" /><circle class="mark-front-rim" cx="420" cy="604" r="192" stroke-width="22" /></svg>Lucka
       </a>
       <nav class="top-nav">
-        <a class="top-link" href="#voz">Voz con IA</a>
-        <a class="top-link" href="https://github.com/juan-ramirez-dev/lucka">Código</a>
-        <a class="pill" href="#download">Descargar</a>
+        <a class="top-link" href="#voice" data-i18n="top.voice">Voice with AI</a>
+        <a class="top-link" href="https://github.com/juan-ramirez-dev/lucka" data-i18n="top.code">Code</a>
+        <div class="lang" role="group" aria-label="Language" data-i18n-attr="aria-label:top.language">
+          <button class="lang-option" type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
+          <button class="lang-option" type="button" data-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
+        </div>
+        <a class="pill" href="#download" data-i18n="top.download">Download</a>
       </nav>
     </header>
 
@@ -85,37 +106,39 @@
       <!-- Hero -->
       <section class="hero">
         <div class="hero-copy">
-          <a class="badge rise" style="--i: 0" href="#voz"><i class="pulse" aria-hidden="true"></i>Nuevo: registra gastos hablando</a>
+          <a class="badge rise" style="--i: 0" href="#voice"><i class="pulse" aria-hidden="true"></i><span data-i18n="hero.badge">New: record expenses by talking</span></a>
           <h1>
-            <span class="rise" style="--i: 1">Cuánto tienes</span>
-            <span class="rise" style="--i: 2">disponible,</span>
-            <span class="rise" style="--i: 3"><mark>sin que nadie</mark></span>
-            <span class="rise" style="--i: 4"><mark>más lo vea.</mark></span>
+            <span class="rise" style="--i: 1" data-i18n="hero.line1">Know what</span>
+            <span class="rise" style="--i: 2" data-i18n="hero.line2">you have left,</span>
+            <span class="rise" style="--i: 3"><mark data-i18n="hero.line3">and keep it</mark></span>
+            <span class="rise" style="--i: 4"><mark data-i18n="hero.line4">to yourself.</mark></span>
           </h1>
-          <p class="lead rise" style="--i: 5">
-            Lucka te dice cuánto te queda este mes y en qué se te va el dinero. Gratis para macOS y Windows. Todo
-            vive en tu computador: sin cuenta, sin nube.
+          <p class="lead rise" style="--i: 5" data-i18n="hero.lead">
+            Lucka tells you how much is left this month and where your money goes. Free for macOS and Windows.
+            Everything lives on your computer: no account, no cloud.
           </p>
 
           <div class="download rise" style="--i: 6" id="download">
             <a class="button" id="primary" href="https://github.com/juan-ramirez-dev/lucka/releases/latest/download/Lucka-macos.dmg">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" /></svg>
-              <span id="primary-label">Descargar para macOS</span>
+              <span id="primary-label">Download for macOS</span>
             </a>
             <a class="alt" id="secondary" href="https://github.com/juan-ramirez-dev/lucka/releases/latest/download/Lucka-windows-setup.exe">
-              ¿Usas Windows? Descarga aquí
+              On Windows? Download here
             </a>
-            <p class="note" id="other" hidden>Lucka es para macOS y Windows. Descárgala desde tu computador.</p>
+            <p class="note" id="other" hidden data-i18n="download.elsewhere">
+              Lucka is for macOS and Windows. Download it from your computer.
+            </p>
           </div>
         </div>
 
-        <!-- Mock vivo del panel. Decorativo: los números son de ejemplo. -->
+        <!-- Live dashboard mock. Decorative: the numbers are examples. -->
         <div class="stage rise" style="--i: 3" aria-hidden="true">
           <div class="app" id="app">
             <div class="app-bar"><i></i><i></i><i></i></div>
             <div class="app-body">
               <aside class="app-side">
-                <span class="mark mark-sm">L</span>
+                <svg class="mark mark-sm" viewBox="0 0 1024 1024" aria-hidden="true"><rect class="mark-tile" width="1024" height="1024" rx="284" /><circle class="mark-back" cx="612" cy="412" r="232" /><circle class="mark-back-rim" cx="612" cy="412" r="176" stroke-width="20" /><circle class="mark-front" cx="420" cy="604" r="266" stroke-width="28" /><circle class="mark-front-rim" cx="420" cy="604" r="192" stroke-width="22" /></svg>
                 <span class="side-link is-active">
                   <svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" /></svg>
                 </span>
@@ -127,17 +150,17 @@
               <div class="app-main">
                 <div class="app-head">
                   <div>
-                    <p class="app-title">Tu mes</p>
-                    <p class="app-cycle">Faltan <strong>12 días</strong> para el pago</p>
+                    <p class="app-title" data-i18n="app.month">Your month</p>
+                    <p class="app-cycle" data-i18n-html="app.cycle"><strong>12 days</strong> to payday</p>
                   </div>
                   <span class="app-btn">
-                    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>Registrar
+                    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg><span data-i18n="app.add">Add</span>
                   </span>
                 </div>
 
                 <div class="app-grid">
                   <section class="w w-ring">
-                    <p class="w-title">Disponible</p>
+                    <p class="w-title" data-i18n="app.available">Available</p>
                     <div class="ring">
                       <svg viewBox="0 0 220 220">
                         <g transform="rotate(-90 110 110)">
@@ -147,33 +170,39 @@
                         </g>
                       </svg>
                       <div class="ring-center">
-                        <p class="ring-label">Disponible</p>
-                        <p class="ring-amount" id="ring-amount">$ 1.240.000</p>
-                        <p class="ring-sub" id="ring-sub">de $ 3.500.000</p>
+                        <p class="ring-label" data-i18n="app.available">Available</p>
+                        <p class="ring-amount" id="ring-amount">$1,240</p>
+                        <p class="ring-sub" id="ring-sub">of $3,500</p>
                       </div>
                     </div>
                     <dl class="stats">
-                      <div><dt><i class="dot dot-spent"></i>Gastado</dt><dd id="stat-spent">$ 1.050.000</dd></div>
-                      <div><dt><i class="dot dot-committed"></i>Comprometido</dt><dd>$ 1.210.000</dd></div>
+                      <div>
+                        <dt><i class="dot dot-spent"></i><span data-i18n="app.spent">Spent</span></dt>
+                        <dd id="stat-spent">$1,050</dd>
+                      </div>
+                      <div>
+                        <dt><i class="dot dot-committed"></i><span data-i18n="app.committed">Committed</span></dt>
+                        <dd data-amount="1210">$1,210</dd>
+                      </div>
                     </dl>
                   </section>
 
                   <div class="app-col">
                     <section class="w w-fixed">
-                      <p class="w-title">Fijos</p>
+                      <p class="w-title" data-i18n="app.fixed">Fixed</p>
                       <ul class="fixed">
-                        <li style="--i: 0"><i class="check"></i><span>Arriendo</span><b>$ 950.000</b></li>
-                        <li style="--i: 1"><i class="check"></i><span>Internet</span><b>$ 90.000</b></li>
-                        <li style="--i: 2"><i class="check"></i><span>Gimnasio</span><b>$ 115.000</b></li>
-                        <li style="--i: 3"><i class="check"></i><span>Celular</span><b>$ 55.000</b></li>
+                        <li style="--i: 0"><i class="check"></i><span data-i18n="app.rent">Rent</span><b data-amount="950">$950</b></li>
+                        <li style="--i: 1"><i class="check"></i><span data-i18n="app.internet">Internet</span><b data-amount="90">$90</b></li>
+                        <li style="--i: 2"><i class="check"></i><span data-i18n="app.gym">Gym</span><b data-amount="115">$115</b></li>
+                        <li style="--i: 3"><i class="check"></i><span data-i18n="app.phone">Phone</span><b data-amount="55">$55</b></li>
                       </ul>
                     </section>
 
                     <section class="w w-budget">
-                      <p class="w-title">Categorías</p>
-                      <div class="bar-row"><span>Mercado</span><small>62%</small><i class="bar"><b style="--v: 62%"></b></i></div>
-                      <div class="bar-row"><span>Salidas</span><small>88%</small><i class="bar"><b class="warn" style="--v: 88%"></b></i></div>
-                      <div class="bar-row"><span>Transporte</span><small>34%</small><i class="bar"><b class="mint" style="--v: 34%"></b></i></div>
+                      <p class="w-title" data-i18n="app.categories">Categories</p>
+                      <div class="bar-row"><span data-i18n="app.groceries">Groceries</span><small>62%</small><i class="bar"><b style="--v: 62%"></b></i></div>
+                      <div class="bar-row"><span data-i18n="app.goingOut">Going out</span><small>88%</small><i class="bar"><b class="warn" style="--v: 88%"></b></i></div>
+                      <div class="bar-row"><span data-i18n="app.transport">Transport</span><small>34%</small><i class="bar"><b class="mint" style="--v: 34%"></b></i></div>
                     </section>
                   </div>
                 </div>
@@ -182,21 +211,20 @@
           </div>
 
           <div class="toast" id="toast">
-            <span class="toast-avatar" id="toast-avatar">M</span>
-            <span class="toast-text"><b id="toast-title">Mercado</b><small id="toast-kind">Gasto registrado</small></span>
-            <span class="toast-amount" id="toast-amount">−$ 45.000</span>
+            <span class="toast-avatar" id="toast-avatar">G</span>
+            <span class="toast-text"><b id="toast-title">Groceries</b><small id="toast-kind">Expense recorded</small></span>
+            <span class="toast-amount" id="toast-amount">−$45</span>
           </div>
         </div>
       </section>
 
-      <!-- Voz con IA -->
-      <section class="section" id="voz">
+      <!-- Voice with AI -->
+      <section class="section" id="voice">
         <header class="section-head" data-reveal>
-          <p class="eyebrow">Nuevo · Registra hablando</p>
-          <h2>Dilo en voz alta. <span class="muted">Lucka lo anota.</span></h2>
-          <p class="lead">
-            Toca el micrófono y cuenta en qué gastaste. La IA lo convierte en registros. Nada se guarda hasta que tú
-            lo confirmas.
+          <p class="eyebrow" data-i18n="voice.eyebrow">New · Record by talking</p>
+          <h2 data-i18n-html="voice.title">Say it out loud. <span class="muted">Lucka writes it down.</span></h2>
+          <p class="lead" data-i18n="voice.lead">
+            Tap the microphone and say what you spent. The AI turns it into records. Nothing is saved until you confirm it.
           </p>
         </header>
 
@@ -205,44 +233,44 @@
             <button class="chapter" type="button" data-chapter="0">
               <i class="chapter-bar"><b></b></i>
               <span class="chapter-n">1</span>
-              <strong>Habla</strong>
-              <small>Toca el micrófono y di todo de una: gastos, fijos pagados o plata que te entró.</small>
+              <strong data-i18n="voice.step1">Talk</strong>
+              <small data-i18n="voice.step1Text">Tap the microphone and say it all at once: expenses, fixed bills you paid or money that came in.</small>
             </button>
             <button class="chapter" type="button" data-chapter="1">
               <i class="chapter-bar"><b></b></i>
               <span class="chapter-n">2</span>
-              <strong>Lucka entiende</strong>
-              <small>Whisper pasa tu voz a texto en tu equipo. Tu IA saca montos, categorías y fechas.</small>
+              <strong data-i18n="voice.step2">Lucka understands</strong>
+              <small data-i18n="voice.step2Text">Whisper turns your voice into text on your computer. Your AI pulls out amounts, categories and dates.</small>
             </button>
             <button class="chapter" type="button" data-chapter="2">
               <i class="chapter-bar"><b></b></i>
               <span class="chapter-n">3</span>
-              <strong>Revisa</strong>
-              <small>Ves un resumen. Corrige un monto, cambia la categoría o quita lo que sobra.</small>
+              <strong data-i18n="voice.step3">Review</strong>
+              <small data-i18n="voice.step3Text">You see a summary. Fix an amount, change the category or drop what doesn't belong.</small>
             </button>
             <button class="chapter" type="button" data-chapter="3">
               <i class="chapter-bar"><b></b></i>
               <span class="chapter-n">4</span>
-              <strong>Listo</strong>
-              <small>Se guarda todo junto. El fijo queda pagado y tu disponible se actualiza.</small>
+              <strong data-i18n="voice.step4">Done</strong>
+              <small data-i18n="voice.step4Text">Everything is saved together. The fixed bill is marked paid and your available amount updates.</small>
             </button>
           </div>
 
           <div class="demo-stage">
-            <!-- Decorativo: los pasos de la izquierda cuentan lo mismo en texto. -->
+            <!-- Decorative: the steps on the left tell the same story in text. -->
             <div class="screen" id="screen" aria-hidden="true">
               <div class="app-bar"><i></i><i></i><i></i></div>
               <div class="screen-body">
                 <div class="app-head">
                   <div>
-                    <p class="app-title">Tu mes</p>
-                    <p class="app-cycle">Faltan <strong>12 días</strong> para el pago</p>
+                    <p class="app-title" data-i18n="app.month">Your month</p>
+                    <p class="app-cycle" data-i18n-html="app.cycle"><strong>12 days</strong> to payday</p>
                   </div>
                 </div>
 
                 <div class="app-grid">
                   <section class="w">
-                    <p class="w-title">Disponible</p>
+                    <p class="w-title" data-i18n="app.available">Available</p>
                     <div class="ring">
                       <svg viewBox="0 0 220 220">
                         <g transform="rotate(-90 110 110)">
@@ -252,39 +280,39 @@
                         </g>
                       </svg>
                       <div class="ring-center">
-                        <p class="ring-label">Disponible</p>
-                        <p class="ring-amount" id="v-amount">$ 1.240.000</p>
-                        <p class="ring-sub" id="v-income">de $ 3.500.000</p>
+                        <p class="ring-label" data-i18n="app.available">Available</p>
+                        <p class="ring-amount" id="v-amount">$1,240</p>
+                        <p class="ring-sub" id="v-income">of $3,500</p>
                       </div>
                     </div>
                   </section>
 
                   <div class="app-col">
                     <section class="w">
-                      <p class="w-title">Fijos</p>
+                      <p class="w-title" data-i18n="app.fixed">Fixed</p>
                       <ul class="v-fixed">
-                        <li class="is-paid"><i class="check"></i><span>Arriendo</span><b>$ 950.000</b></li>
-                        <li id="v-internet"><i class="check"></i><span>Internet</span><b>$ 90.000</b></li>
-                        <li><i class="check"></i><span>Gimnasio</span><b>$ 115.000</b></li>
+                        <li class="is-paid"><i class="check"></i><span data-i18n="app.rent">Rent</span><b data-amount="950">$950</b></li>
+                        <li id="v-internet"><i class="check"></i><span data-i18n="app.internet">Internet</span><b data-amount="90">$90</b></li>
+                        <li><i class="check"></i><span data-i18n="app.gym">Gym</span><b data-amount="115">$115</b></li>
                       </ul>
                     </section>
 
                     <section class="w">
-                      <p class="w-title">Recientes</p>
+                      <p class="w-title" data-i18n="app.recent">Recent</p>
                       <ul class="recent">
-                        <li class="is-new" data-income><span class="toast-avatar">B</span><span>Bono</span><b>+$ 200.000</b></li>
-                        <li class="is-new"><span class="toast-avatar">I</span><span>Internet</span><b>−$ 90.000</b></li>
-                        <li class="is-new"><span class="toast-avatar">M</span><span>Mercado</span><b>−$ 45.000</b></li>
-                        <li><span class="toast-avatar">C</span><span>Café</span><b>−$ 12.000</b></li>
-                        <li><span class="toast-avatar">T</span><span>Taxi</span><b>−$ 23.000</b></li>
-                        <li><span class="toast-avatar">C</span><span>Cine</span><b>−$ 38.000</b></li>
+                        <li class="is-new" data-income><span class="toast-avatar">B</span><span data-i18n="app.bonus">Bonus</span><b data-amount="200" data-sign="+">+$200</b></li>
+                        <li class="is-new"><span class="toast-avatar">I</span><span data-i18n="app.internet">Internet</span><b data-amount="90" data-sign="−">−$90</b></li>
+                        <li class="is-new"><span class="toast-avatar">G</span><span data-i18n="app.groceries">Groceries</span><b data-amount="45" data-sign="−">−$45</b></li>
+                        <li><span class="toast-avatar">C</span><span data-i18n="app.coffee">Coffee</span><b data-amount="4.5" data-sign="−">−$4.50</b></li>
+                        <li><span class="toast-avatar">T</span><span data-i18n="app.taxi">Taxi</span><b data-amount="23" data-sign="−">−$23</b></li>
+                        <li><span class="toast-avatar">M</span><span data-i18n="app.movies">Movies</span><b data-amount="38" data-sign="−">−$38</b></li>
                       </ul>
                     </section>
                   </div>
                 </div>
               </div>
 
-              <!-- Lo que dice la persona, como subtítulo. -->
+              <!-- What the person says, as a subtitle. -->
               <p class="said" id="v-said">
                 <span class="said-wave"><i></i><i></i><i></i><i></i><i></i></span>
                 <span class="said-text" id="v-said-text"></span>
@@ -292,8 +320,8 @@
 
               <div class="v-dock">
                 <span class="v-bubble" id="v-bubble">
-                  <b id="v-bubble-title">Escuchando lo que dijiste…</b>
-                  <small id="v-bubble-note">Whisper · en tu equipo</small>
+                  <b id="v-bubble-title">Listening to what you said…</b>
+                  <small id="v-bubble-note">Whisper · on your computer</small>
                 </span>
                 <span class="v-fab">
                   <svg class="v-mic" viewBox="0 0 24 24">
@@ -306,35 +334,35 @@
 
               <div class="v-modal-wrap">
                 <div class="v-modal">
-                  <p class="v-eyebrow">Por voz</p>
-                  <p class="v-title">¿Guardo esto?</p>
-                  <p class="v-heard">«Gasté 45 mil en mercado, pagué el internet y me entró un bono de 200 mil»</p>
+                  <p class="v-eyebrow" data-i18n="voice.byVoice">By voice</p>
+                  <p class="v-title" data-i18n="voice.saveThis">Save this?</p>
+                  <p class="v-heard" data-i18n="voice.heard">“I spent $45 on groceries, paid the internet and got a $200 bonus”</p>
                   <ul class="v-items">
                     <li class="v-item">
                       <span class="v-info">
-                        <b>Mercado</b>
-                        <span class="v-meta"><i class="v-tag">Gasto</i><span class="v-select">Mercado</span>Hoy</span>
+                        <b data-i18n="app.groceries">Groceries</b>
+                        <span class="v-meta"><i class="v-tag" data-i18n="voice.expense">Expense</i><span class="v-select" data-i18n="app.groceries">Groceries</span><span data-i18n="voice.today">Today</span></span>
                       </span>
-                      <span class="v-money">$ 45.000</span>
+                      <span class="v-money" data-amount="45">$45</span>
                     </li>
                     <li class="v-item">
                       <span class="v-info">
-                        <b>Internet</b>
-                        <span class="v-meta"><i class="v-tag" data-kind="fixed">Gasto fijo</i>Internet · Hoy</span>
+                        <b data-i18n="app.internet">Internet</b>
+                        <span class="v-meta"><i class="v-tag" data-kind="fixed" data-i18n="voice.fixedExpense">Fixed expense</i><span data-i18n="voice.internetToday">Internet · Today</span></span>
                       </span>
-                      <span class="v-money">$ 90.000</span>
+                      <span class="v-money" data-amount="90">$90</span>
                     </li>
                     <li class="v-item">
                       <span class="v-info">
-                        <b>Bono</b>
-                        <span class="v-meta"><i class="v-tag" data-kind="income">Ingreso</i>Hoy</span>
+                        <b data-i18n="app.bonus">Bonus</b>
+                        <span class="v-meta"><i class="v-tag" data-kind="income" data-i18n="voice.income">Income</i><span data-i18n="voice.today">Today</span></span>
                       </span>
-                      <span class="v-money">$ 200.000</span>
+                      <span class="v-money" data-amount="200">$200</span>
                     </li>
                   </ul>
                   <div class="v-actions">
-                    <span class="v-save" id="v-save">Guardar 3 registros</span>
-                    <span class="v-ghost">Descartar</span>
+                    <span class="v-save" id="v-save">Save 3 records</span>
+                    <span class="v-ghost" data-i18n="voice.discard">Discard</span>
                   </div>
                 </div>
               </div>
@@ -343,13 +371,13 @@
                 <span class="toast-avatar">
                   <svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10" /></svg>
                 </span>
-                <span class="toast-text"><b>3 registros guardados</b><small>Por voz</small></span>
+                <span class="toast-text"><b data-i18n="voice.saved">3 records saved</b><small data-i18n="voice.byVoice">By voice</small></span>
               </div>
 
               <span class="cursor" id="v-cursor"></span>
             </div>
 
-            <button class="demo-play" id="demo-play" type="button" aria-label="Pausar demo" hidden>
+            <button class="demo-play" id="demo-play" type="button" aria-label="Pause demo" hidden>
               <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12" /></svg>
               <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10-6.5z" /></svg>
             </button>
@@ -357,12 +385,12 @@
         </div>
       </section>
 
-      <!-- Qué IA usar -->
-      <section class="section" id="tu-ia">
+      <!-- Which AI to use -->
+      <section class="section" id="your-ai">
         <header class="section-head" data-reveal>
-          <p class="eyebrow">Tu IA, tú eliges</p>
-          <h2>Privada en tu equipo <span class="muted">o con tu propia key.</span></h2>
-          <p class="lead">La configuras una vez, la primera vez que la abres. Puedes cambiarla luego en Ajustes.</p>
+          <p class="eyebrow" data-i18n="ai.eyebrow">Your AI, your choice</p>
+          <h2 data-i18n-html="ai.title">Private on your computer <span class="muted">or with your own key.</span></h2>
+          <p class="lead" data-i18n="ai.lead">You set it up once, the first time you open it. You can change it later in Settings.</p>
         </header>
 
         <div class="cards">
@@ -374,23 +402,23 @@
                 </svg>
               </span>
               <span class="voice-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-              <span class="vault-file">El audio no sale</span>
+              <span class="vault-file" data-i18n="ai.audioStays">Audio stays here</span>
             </div>
-            <h3>Tu voz se queda contigo</h3>
-            <p>Whisper pasa la voz a texto dentro de tu computador. Siempre. Se baja una vez (unos 490 MB).</p>
+            <h3 data-i18n="ai.voiceTitle">Your voice stays with you</h3>
+            <p data-i18n="ai.voiceText">Whisper turns speech into text on your computer. Always. It downloads once (about 490 MB).</p>
           </article>
 
           <article class="card" data-reveal style="--i: 1">
             <div class="card-art model-art" aria-hidden="true">
               <span class="model-card">
-                <span class="model-name"><b>Qwen 2.5 3B</b><small>Recomendado</small></span>
+                <span class="model-name"><b>Qwen 2.5 3B</b><small data-i18n="ai.recommended">Recommended</small></span>
                 <i class="bar"><b class="mint" style="--v: 100%"></b></i>
-                <small class="model-done">Descargado · 2,1 GB</small>
+                <small class="model-done" data-i18n="ai.downloaded">Downloaded · 2.1 GB</small>
               </span>
-              <span class="vault-file">Sin internet</span>
+              <span class="vault-file" data-i18n="ai.offline">Offline</span>
             </div>
-            <h3>IA en tu equipo</h3>
-            <p>100% privado: nada sale de tu computador. Ocupa espacio en disco y tarda unos segundos por frase.</p>
+            <h3 data-i18n="ai.localTitle">AI on your computer</h3>
+            <p data-i18n="ai.localText">100% private: nothing leaves your computer. It takes disk space and a few seconds per sentence.</p>
           </article>
 
           <article class="card" data-reveal style="--i: 2">
@@ -400,58 +428,58 @@
               <span class="chip" style="--i: 2">Gemini</span>
               <span class="key-pill">
                 <svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="4" /><path d="M11 12l9-9M16 7l3 3" /></svg>
-                En el llavero del sistema
+                <span data-i18n="ai.keychain">In your system keychain</span>
               </span>
             </div>
-            <h3>O con tu key</h3>
-            <p>
-              Pega tu key de OpenAI, Claude o Gemini. Se guarda en el llavero del sistema, nunca en Lucka ni en los
-              respaldos. Al proveedor solo va el texto y los nombres de tus categorías.
+            <h3 data-i18n="ai.keyTitle">Or with your key</h3>
+            <p data-i18n="ai.keyText">
+              Paste your OpenAI, Claude or Gemini key. It's stored in the system keychain, never in Lucka or in backups.
+              Only the text and your category names go to the provider.
             </p>
           </article>
         </div>
       </section>
 
-      <!-- Qué hace -->
+      <!-- What it does -->
       <section class="section">
         <header class="section-head" data-reveal>
-          <p class="eyebrow">Qué hace</p>
-          <h2>Tres respuestas, <span class="muted">de un vistazo.</span></h2>
+          <p class="eyebrow" data-i18n="what.eyebrow">What it does</p>
+          <h2 data-i18n-html="what.title">Three answers, <span class="muted">at a glance.</span></h2>
         </header>
 
         <div class="cards">
           <article class="card" data-reveal style="--i: 0">
             <div class="card-art formula" aria-hidden="true">
-              <span class="chip">Ingreso</span><span class="op">−</span>
-              <span class="chip chip-primary">Gastado</span><span class="op">−</span>
-              <span class="chip chip-mint">Fijos</span><span class="op">=</span>
-              <span class="chip chip-ink">Disponible</span>
+              <span class="chip" data-i18n="what.income">Income</span><span class="op">−</span>
+              <span class="chip chip-primary" data-i18n="what.spent">Spent</span><span class="op">−</span>
+              <span class="chip chip-mint" data-i18n="what.fixed">Fixed</span><span class="op">=</span>
+              <span class="chip chip-ink" data-i18n="what.available">Available</span>
             </div>
-            <h3>Disponible, de verdad</h3>
-            <p>Ingreso menos lo gastado menos los fijos que faltan. De día de pago a día de pago.</p>
+            <h3 data-i18n="what.availableTitle">Available, for real</h3>
+            <p data-i18n="what.availableText">Income minus what you spent minus the fixed bills still to pay. From payday to payday.</p>
           </article>
 
           <article class="card" data-reveal style="--i: 1">
             <div class="card-art bills" aria-hidden="true">
-              <span class="bill" style="--i: 0"><i class="check"></i>Arriendo</span>
-              <span class="bill" style="--i: 1"><i class="check"></i>Internet</span>
-              <span class="bill bill-bar" style="--i: 2"><span>Mercado</span><i class="bar"><b style="--v: 70%"></b></i></span>
+              <span class="bill" style="--i: 0"><i class="check"></i><span data-i18n="app.rent">Rent</span></span>
+              <span class="bill" style="--i: 1"><i class="check"></i><span data-i18n="app.internet">Internet</span></span>
+              <span class="bill bill-bar" style="--i: 2"><span data-i18n="app.groceries">Groceries</span><i class="bar"><b style="--v: 70%"></b></i></span>
             </div>
-            <h3>Fijos y categorías</h3>
-            <p>Marca el arriendo como pagado. Ve cuánto te queda en mercado o salidas.</p>
+            <h3 data-i18n="what.fixedTitle">Fixed bills and categories</h3>
+            <p data-i18n="what.fixedText">Mark the rent as paid. See how much is left for groceries or going out.</p>
           </article>
 
-          <article class="card" data-reveal style="--i: 2" id="privacidad">
+          <article class="card" data-reveal style="--i: 2" id="privacy">
             <div class="card-art vault" aria-hidden="true">
               <span class="vault-ring"></span>
               <span class="vault-ring vault-ring-2"></span>
               <span class="vault-core">
                 <svg viewBox="0 0 24 24"><path d="M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3" /></svg>
               </span>
-              <span class="vault-file">lucka.db · en tu equipo</span>
+              <span class="vault-file" data-i18n="what.file">lucka.db · on your computer</span>
             </div>
-            <h3>Privado por diseño</h3>
-            <p>No hay servidor. Tus datos están en un archivo en tu equipo. Exporta un respaldo cuando quieras.</p>
+            <h3 data-i18n="what.privateTitle">Private by design</h3>
+            <p data-i18n="what.privateText">There's no server. Your data is a file on your computer. Export a backup whenever you want.</p>
           </article>
         </div>
       </section>
@@ -459,15 +487,15 @@
       <!-- Widgets -->
       <section class="section split">
         <div class="split-copy" data-reveal>
-          <p class="eyebrow">Tu panel, a tu manera</p>
-          <h2>Mueve, ajusta y ordena <span class="muted">lo que te importa.</span></h2>
-          <p class="lead">
-            Cada bloque del panel es un widget. Arrástralo, cámbiale el tamaño, escóndelo o tráelo de vuelta. Para
-            anotar algo, un botón o tu voz.
+          <p class="eyebrow" data-i18n="board.eyebrow">Your dashboard, your way</p>
+          <h2 data-i18n-html="board.title">Move, resize and sort <span class="muted">what matters to you.</span></h2>
+          <p class="lead" data-i18n="board.lead">
+            Every block on the dashboard is a widget. Drag it, resize it, hide it or bring it back. To write something
+            down: a button or your voice.
           </p>
           <button class="toggle" id="edit-toggle" type="button" aria-pressed="true">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h10M4 19h6" /></svg>
-            <span id="edit-label">Listo</span>
+            <span id="edit-label">Done</span>
           </button>
         </div>
 
@@ -478,34 +506,77 @@
               <circle cx="22" cy="22" r="17" />
               <circle cx="22" cy="22" r="17" class="tile-donut-fill" />
             </svg>
-            <b>Disponible</b>
+            <b data-i18n="app.available">Available</b>
           </div>
           <div class="tile">
             <span class="tile-grip"></span>
             <span class="tile-lines"><i></i><i></i><i></i></span>
-            <b>Fijos</b>
+            <b data-i18n="app.fixed">Fixed</b>
           </div>
           <div class="tile">
             <span class="tile-grip"></span>
             <span class="tile-bars"><i style="--v: 70%"></i><i style="--v: 45%"></i><i style="--v: 85%"></i></span>
-            <b>Categorías</b>
+            <b data-i18n="app.categories">Categories</b>
           </div>
           <div class="tile">
             <span class="tile-grip"></span>
-            <span class="tile-avatars"><i>M</i><i>C</i><i>T</i></span>
-            <b>Recientes</b>
+            <span class="tile-avatars"><i>G</i><i>C</i><i>T</i></span>
+            <b data-i18n="app.recent">Recent</b>
           </div>
         </div>
       </section>
 
-      <!-- Primera vez -->
-      <section class="section" id="primera-vez">
+      <!-- How it's built: the README's architecture video, in English for everyone. -->
+      <section class="section" id="how-its-built">
         <header class="section-head" data-reveal>
-          <p class="eyebrow">Primera vez que la abres</p>
-          <h2>Tu sistema te va a avisar. <span class="muted">Es normal.</span></h2>
-          <p class="lead">
-            Lucka es open source y no paga certificados de Apple ni Microsoft. Por eso el sistema pide confirmar una
-            sola vez.
+          <p class="eyebrow" data-i18n="built.eyebrow">Open source</p>
+          <h2 data-i18n-html="built.title">How it’s built, <span class="muted">in 100 seconds.</span></h2>
+          <p class="lead" data-i18n="built.lead">
+            A TypeScript UI in a Rust shell, a SQLite file on your disk and AI that can run offline. Every line is on
+            GitHub.
+          </p>
+        </header>
+
+        <div class="built" data-reveal style="--i: 1">
+          <video
+            class="built-video"
+            controls
+            playsinline
+            preload="none"
+            poster="assets/lucka-architecture.jpg"
+            width="1920"
+            height="1080"
+          >
+            <source src="assets/lucka-architecture.mp4" type="video/mp4" />
+          </video>
+          <div class="built-actions">
+            <a class="button" href="https://github.com/juan-ramirez-dev/lucka">
+              <svg class="github" viewBox="0 0 16 16" aria-hidden="true">
+                <path
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+                />
+              </svg>
+              <span data-i18n="built.repo">See the code on GitHub</span>
+            </a>
+            <a
+              class="alt"
+              href="https://github.com/juan-ramirez-dev/lucka/blob/main/docs/architecture.md"
+              data-i18n="built.docs"
+              >Read the architecture</a
+            >
+            <span class="built-note" data-i18n="built.note">1080p · 101 s</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- First launch -->
+      <section class="section" id="first-launch">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow" data-i18n="first.eyebrow">The first time you open it</p>
+          <h2 data-i18n-html="first.title">Your system will warn you. <span class="muted">That’s normal.</span></h2>
+          <p class="lead" data-i18n="first.lead">
+            Lucka is open source and doesn't pay for Apple or Microsoft certificates. So your system asks you to
+            confirm once.
           </p>
         </header>
 
@@ -513,37 +584,37 @@
           <article class="card" data-reveal style="--i: 0">
             <h3 class="os-tag">macOS</h3>
             <ol>
-              <li>Abre el <code>.dmg</code> y arrastra Lucka a Aplicaciones.</li>
-              <li>Ábrela. Sale un aviso: dale <strong>Listo</strong>.</li>
-              <li>Ajustes del Sistema → Privacidad y seguridad → <strong>Abrir igualmente</strong>.</li>
+              <li data-i18n-html="first.mac1">Open the <code>.dmg</code> and drag Lucka to Applications.</li>
+              <li data-i18n-html="first.mac2">Open it. A warning shows up: click <strong>Done</strong>.</li>
+              <li data-i18n-html="first.mac3">System Settings → Privacy &amp; Security → <strong>Open Anyway</strong>.</li>
             </ol>
-            <!-- Captura: assets/macos-aviso.png -->
+            <!-- Screenshot: assets/macos-warning.png -->
             <details>
-              <summary>Si eres técnico</summary>
+              <summary data-i18n="first.technical">If you’re technical</summary>
               <pre><code>xattr -dr com.apple.quarantine /Applications/Lucka.app</code></pre>
             </details>
           </article>
           <article class="card" data-reveal style="--i: 1">
             <h3 class="os-tag">Windows</h3>
             <ol>
-              <li>Abre el instalador.</li>
-              <li>Sale “Windows protegió su PC”: clic en <strong>Más información</strong>.</li>
-              <li>Clic en <strong>Ejecutar de todas formas</strong>.</li>
+              <li data-i18n="first.win1">Open the installer.</li>
+              <li data-i18n-html="first.win2">“Windows protected your PC” shows up: click <strong>More info</strong>.</li>
+              <li data-i18n-html="first.win3">Click <strong>Run anyway</strong>.</li>
             </ol>
-            <!-- Captura: assets/windows-aviso.png -->
+            <!-- Screenshot: assets/windows-warning.png -->
           </article>
         </div>
-        <p class="note note-center" data-reveal>
-          <i class="pulse" aria-hidden="true"></i>Después se actualiza sola. Para la voz, pide permiso del micrófono
-          una vez.
+        <p class="note note-center" data-reveal data-i18n-html="first.note">
+          <i class="pulse" aria-hidden="true"></i>After that it updates itself. For voice, it asks for microphone
+          permission once.
         </p>
       </section>
 
-      <!-- Cierre -->
+      <!-- Closing -->
       <section class="cta" data-reveal>
-        <span class="mark mark-lg" aria-hidden="true">L</span>
-        <h2>Tu dinero, en orden <span class="muted">y solo para tus ojos.</span></h2>
-        <a class="button" href="#download">Descargar Lucka</a>
+        <svg class="mark mark-lg" viewBox="0 0 1024 1024" aria-hidden="true"><rect class="mark-tile" width="1024" height="1024" rx="284" /><circle class="mark-back" cx="612" cy="412" r="232" /><circle class="mark-back-rim" cx="612" cy="412" r="176" stroke-width="20" /><circle class="mark-front" cx="420" cy="604" r="266" stroke-width="28" /><circle class="mark-front-rim" cx="420" cy="604" r="192" stroke-width="22" /></svg>
+        <h2 data-i18n-html="cta.title">Your money, in order <span class="muted">and for your eyes only.</span></h2>
+        <a class="button" href="#download" data-i18n="cta.download">Download Lucka</a>
       </section>
     </main>
 
@@ -552,6 +623,7 @@
       <a href="https://github.com/juan-ramirez-dev/lucka">github.com/juan-ramirez-dev/lucka</a>
     </footer>
 
+    <script src="i18n.js"></script>
     <script src="main.js"></script>
   </body>
 </html>

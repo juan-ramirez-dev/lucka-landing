@@ -1,4 +1,4 @@
-/* Colores: tokens en el <style> de index.html. Resto: copia de lucka/src/app/globals.css. */
+/* Colors: tokens in the <style> of index.html. The rest is copied from lucka/src/app/globals.css. */
 :root {
   --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 
@@ -93,7 +93,7 @@ main,
   padding-inline: var(--gutter);
 }
 
-/* Fondo: manchas lila y menta que flotan muy lento. */
+/* Background: lilac and mint blobs drifting very slowly. */
 .blobs {
   position: absolute;
   inset: 0 0 auto;
@@ -141,7 +141,7 @@ main,
   }
 }
 
-/* Marca */
+/* Brand */
 .wordmark {
   display: inline-flex;
   align-items: center;
@@ -152,24 +152,46 @@ main,
   text-decoration: none;
 }
 
+/* Same drawing as the app icon (lucka/src-tauri/icons/source.svg), painted with the tokens. */
 .mark {
-  display: grid;
-  place-items: center;
+  display: block;
+  flex: none;
   width: 36px;
   height: 36px;
-  font-size: var(--text-md);
-  font-weight: 700;
-  color: var(--color-text-inverse);
-  background: var(--color-primary);
-  border-radius: var(--radius-sm);
   transition: transform var(--duration) var(--ease-out);
+}
+
+.mark-tile {
+  fill: var(--color-primary);
+}
+
+.mark-back {
+  fill: var(--color-mint);
+}
+
+.mark-back-rim {
+  fill: none;
+  stroke: var(--color-positive);
+  stroke-opacity: 0.35;
+}
+
+/* The tile-colored stroke opens the gap between the coins. */
+.mark-front {
+  fill: var(--color-surface);
+  stroke: var(--color-primary);
+}
+
+.mark-front-rim {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-opacity: 0.22;
 }
 
 .wordmark:hover .mark {
   transform: rotate(-8deg) scale(1.06);
 }
 
-/* Barra superior */
+/* Top bar */
 .top {
   position: sticky;
   top: 0;
@@ -177,7 +199,7 @@ main,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* Fondo de lado a lado; el contenido se alinea con main. */
+  /* Full-width background; the content lines up with main. */
   padding: var(--space-4) max(var(--gutter), (100% - var(--max)) / 2 + var(--gutter));
   background: color-mix(in srgb, var(--color-bg) 72%, transparent);
   backdrop-filter: blur(14px);
@@ -218,6 +240,46 @@ main,
 .pill:hover {
   color: var(--color-text-inverse);
   background: var(--color-primary);
+}
+
+/* Language switch: two short pills, the current one filled. */
+.lang {
+  display: inline-flex;
+  padding: 3px;
+  background: var(--color-surface);
+  border: var(--line-soft);
+  border-radius: var(--radius-full);
+}
+
+.lang-option {
+  min-width: 34px;
+  padding: var(--space-1) var(--space-2);
+  font: inherit;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease),
+    background var(--duration-fast) var(--ease);
+}
+
+.lang-option:hover {
+  color: var(--color-text);
+}
+
+.lang-option[aria-pressed="true"] {
+  color: var(--color-text-inverse);
+  background: var(--color-ink);
+}
+
+/* Set by the head script until i18n.js has translated the page. */
+.i18n-wait body {
+  visibility: hidden;
 }
 
 /* Hero */
@@ -286,7 +348,7 @@ h1 > span {
   display: block;
 }
 
-/* Subrayado menta que se pinta después de que entra la frase. */
+/* Mint underline painted after the sentence comes in. */
 h1 mark {
   color: var(--color-primary);
   background: linear-gradient(var(--color-mint-soft), var(--color-mint-soft))
@@ -342,7 +404,7 @@ h1 mark {
   stroke-width: 2.2;
 }
 
-/* Brillo que cruza el botón cada tanto. */
+/* A shine that crosses the button every so often. */
 .button::after {
   content: "";
   position: absolute;
@@ -408,7 +470,7 @@ h1 mark {
   margin-top: var(--space-8);
 }
 
-/* Entrada del hero en cascada. */
+/* Staggered hero entrance. */
 .rise {
   animation: rise 900ms calc(var(--i, 0) * var(--stagger) + 100ms)
     var(--ease-out) both;
@@ -422,7 +484,7 @@ h1 mark {
   }
 }
 
-/* Mock del panel */
+/* Dashboard mock */
 .stage {
   position: relative;
   perspective: 1400px;
@@ -490,8 +552,6 @@ h1 mark {
   width: 28px;
   height: 28px;
   margin-bottom: var(--space-4);
-  font-size: var(--text-xs);
-  border-radius: 8px;
 }
 
 .side-link {
@@ -612,7 +672,7 @@ h1 mark {
   font-weight: 700;
 }
 
-/* Anillo: mismos trazos que ring.tsx. Largos por defecto = 30% y 34.6% de 578. */
+/* Ring: same strokes as ring.tsx. Default lengths = 30% and 34.6% of 578. */
 .ring {
   position: relative;
   container-type: inline-size;
@@ -738,7 +798,7 @@ h1 mark {
   background: var(--color-mint);
 }
 
-/* Fijos: los dos primeros se marcan solos al cargar. */
+/* Fixed expenses: the first two check themselves on load. */
 .fixed {
   display: flex;
   flex-direction: column;
@@ -826,7 +886,7 @@ h1 mark {
   }
 }
 
-/* Barras de categorías */
+/* Category bars */
 .bar-row {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -871,7 +931,7 @@ h1 mark {
   }
 }
 
-/* Aviso flotante: simula un gasto recién registrado. */
+/* Floating toast: fakes a freshly recorded expense. */
 .toast {
   position: absolute;
   left: clamp(-1.5rem, -3vw, 0rem);
@@ -934,7 +994,7 @@ h1 mark {
   color: var(--color-positive);
 }
 
-/* Secciones */
+/* Sections */
 .section {
   padding-block: clamp(3rem, 8vw, 6rem);
 }
@@ -959,6 +1019,7 @@ h2 {
   font-weight: 800;
   line-height: 1.08;
   letter-spacing: -0.03em;
+  text-wrap: balance;
 }
 
 .muted {
@@ -972,7 +1033,7 @@ h3 {
   letter-spacing: var(--tracking-tight);
 }
 
-/* Aparición al hacer scroll (main.js agrega .is-in). */
+/* Reveal on scroll (main.js adds .is-in). */
 .js [data-reveal] {
   opacity: 0;
   transform: translateY(32px);
@@ -987,7 +1048,7 @@ h3 {
   transform: none;
 }
 
-/* Las animaciones internas esperan a que la tarjeta entre. */
+/* Inner animations wait for the card to come in. */
 .js [data-reveal]:not(.is-in) * {
   animation-play-state: paused !important;
 }
@@ -1037,7 +1098,7 @@ html:not(.js) .cards .card:hover {
   border-radius: var(--radius-md);
 }
 
-/* Fórmula: cada pieza entra en orden. */
+/* Formula: each piece comes in order. */
 .formula {
   flex-wrap: wrap;
   align-content: center;
@@ -1104,7 +1165,7 @@ html:not(.js) .cards .card:hover {
   color: var(--color-text-muted);
 }
 
-/* Fijos que se marcan */
+/* Fixed expenses that get checked */
 .bills {
   flex-direction: column;
   align-items: stretch;
@@ -1147,7 +1208,7 @@ html:not(.js) .cards .card:hover {
   grid-column: auto;
 }
 
-/* Bóveda: candado con ondas. */
+/* Vault: a lock with ripples. */
 .vault {
   position: relative;
   flex-direction: column;
@@ -1297,7 +1358,7 @@ html:not(.js) .cards .card:hover {
     background var(--duration-fast) var(--ease);
 }
 
-/* Modo Personalizar: igual que widget.module.css. */
+/* Customize mode: same as widget.module.css. */
 .board[data-editing] .tile {
   border-color: var(--color-border);
   border-style: dashed;
@@ -1455,7 +1516,7 @@ html:not(.js) .cards .card:hover {
   background: var(--color-warning-soft);
 }
 
-/* Demo de voz: main.js mueve los data-* de .screen según el tiempo. */
+/* Voice demo: main.js moves the data-* of .screen over time. */
 .demo {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -1606,7 +1667,7 @@ html:not(.js) .cursor {
   box-shadow: var(--shadow-lg);
 }
 
-/* Abajo queda un carril libre para el subtítulo y el micrófono. */
+/* A free lane at the bottom for the subtitle and the microphone. */
 .screen-body {
   display: flex;
   flex-direction: column;
@@ -1620,7 +1681,7 @@ html:not(.js) .cursor {
   opacity: 0;
 }
 
-/* Fijos */
+/* Fixed expenses */
 .v-fixed,
 .recent {
   display: flex;
@@ -1676,7 +1737,7 @@ html:not(.js) .cursor {
   text-decoration-color: var(--color-text-muted);
 }
 
-/* Recientes: alto fijo para que el mock no cambie de tamaño al sumar filas. */
+/* Recent: fixed height so the mock doesn't resize when rows are added. */
 .recent {
   height: 7rem;
   overflow: hidden;
@@ -1723,7 +1784,7 @@ html:not(.js) .cursor {
   transform: translateX(-12px);
 }
 
-/* Subtítulo: lo que dice la persona. */
+/* Subtitle: what the person says. */
 .said {
   position: absolute;
   left: var(--space-5);
@@ -1800,7 +1861,7 @@ html:not(.js) .said {
   }
 }
 
-/* La IA marca lo que entendió, con los colores de cada tipo. */
+/* The AI highlights what it understood, in each type's color. */
 .said mark {
   color: inherit;
   background: transparent;
@@ -1830,7 +1891,7 @@ html:not(.js) .said {
   background: var(--color-mint-soft);
 }
 
-/* Micrófono flotante: igual que voice.module.css. */
+/* Floating microphone: same as voice.module.css. */
 .v-dock {
   position: absolute;
   right: var(--space-5);
@@ -1943,7 +2004,7 @@ html:not(.js) .said {
   color: var(--color-positive);
 }
 
-/* Resumen antes de guardar. Sin JS se ve abierto. */
+/* Summary before saving. Without JS it shows open. */
 .v-modal-wrap {
   position: absolute;
   inset: 0;
@@ -2154,7 +2215,7 @@ html:not(.js) .said {
   stroke-width: 2.6;
 }
 
-/* Puntero: la punta está en (0, 0). */
+/* Pointer: the tip is at (0, 0). */
 .cursor {
   position: absolute;
   top: 0;
@@ -2212,7 +2273,7 @@ html:not(.js) .said {
   }
 }
 
-/* Tarjetas de "Tu IA" */
+/* "Your AI" cards */
 .voice-art,
 .keys-art {
   display: grid;
@@ -2346,13 +2407,13 @@ html:not(.js) .said {
     order: -1;
   }
 
-  /* En pantalla chica solo se lee el texto del paso actual. */
+  /* On small screens only the current step's text shows. */
   .chapter:not([aria-current]) small {
     display: none;
   }
 }
 
-/* Mock angosto: el resumen tiene que caber sobre el anillo. */
+/* Narrow mock: the summary has to fit over the ring. */
 @media (max-width: 560px) {
   .screen-body {
     padding: var(--space-4) var(--space-4) 7.5rem;
@@ -2391,7 +2452,43 @@ html:not(.js) .said {
   }
 }
 
-/* Primera vez */
+/* How it's built: the architecture video and the way to the code. */
+.built {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.built-video {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: var(--color-surface);
+  border: var(--line-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.built-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-6);
+}
+
+/* A filled mark, unlike the page's line icons. */
+.button .github {
+  fill: currentColor;
+  stroke: none;
+}
+
+.built-note {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* First launch */
 .steps {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
@@ -2472,7 +2569,7 @@ code {
   font-size: 0.8125rem;
 }
 
-/* Cierre */
+/* Closing */
 .cta {
   display: flex;
   flex-direction: column;
@@ -2493,8 +2590,6 @@ code {
 .mark-lg {
   width: 64px;
   height: 64px;
-  font-size: var(--text-xl);
-  border-radius: var(--radius-md);
   animation: spin-in 1s var(--ease-out) both;
 }
 
@@ -2505,7 +2600,7 @@ code {
   }
 }
 
-/* Pie */
+/* Footer */
 .foot {
   display: flex;
   flex-wrap: wrap;
@@ -2525,7 +2620,7 @@ code {
   color: var(--color-primary);
 }
 
-/* Pantallas chicas: el mock se queda con el anillo. */
+/* Small screens: the mock keeps only the ring. */
 @media (max-width: 560px) {
   .app-side,
   .app-col {

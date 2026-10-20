@@ -1,6 +1,8 @@
-// Botón principal según el sistema. El otro queda como link debajo.
+// Main button for the visitor's OS. The other one stays as a link below.
 const MAC = 'https://github.com/juan-ramirez-dev/lucka/releases/latest/download/Lucka-macos.dmg'
 const WIN = 'https://github.com/juan-ramirez-dev/lucka/releases/latest/download/Lucka-windows-setup.exe'
+
+const t = key => I18N.t(key)
 
 const ua = navigator.userAgent
 const isWindows = /Windows/i.test(ua)
@@ -10,20 +12,29 @@ const primary = document.getElementById('primary')
 const primaryLabel = document.getElementById('primary-label')
 const secondary = document.getElementById('secondary')
 
-if (isWindows) {
-  primary.href = WIN
-  primaryLabel.textContent = 'Descargar para Windows'
-  secondary.href = MAC
-  secondary.textContent = '¿Usas Mac? Descarga aquí'
-} else if (!isMac) {
+function paintDownload() {
+  if (isWindows) {
+    primary.href = WIN
+    primaryLabel.textContent = t('download.windows')
+    secondary.href = MAC
+    secondary.textContent = t('download.otherMac')
+    return
+  }
+  primaryLabel.textContent = t('download.mac')
+  if (isMac) {
+    secondary.textContent = t('download.otherWindows')
+    return
+  }
   document.getElementById('other').hidden = false
   secondary.href = WIN
-  secondary.textContent = 'Descargar para Windows'
+  secondary.textContent = t('download.windows')
 }
 
 const calm = matchMedia('(prefers-reduced-motion: reduce)').matches
+// ?record: the voice demo waits at 0 for scripts/record-demo.mjs to drive it.
+const recording = new URLSearchParams(location.search).has('record')
 
-// Secciones que entran al hacer scroll.
+// Sections that slide in on scroll.
 const revealer = new IntersectionObserver(
   entries => {
     for (const entry of entries) {
@@ -36,7 +47,7 @@ const revealer = new IntersectionObserver(
 )
 document.querySelectorAll('[data-reveal]').forEach(el => revealer.observe(el))
 
-// Solo corre lo que está en pantalla y con la pestaña visible.
+// Only runs what's on screen, with the tab visible.
 function whileVisible(el, onChange) {
   let visible = false
   const update = () => onChange(visible && !document.hidden)
@@ -47,21 +58,55 @@ function whileVisible(el, onChange) {
   document.addEventListener('visibilitychange', update)
 }
 
-/* ---------- Demo en vivo del panel ---------- */
+/* ---------- Money ---------- */
 
-const money = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 })
+// Demo amounts are dollars. In pesos the same number means thousands: $45 → $ 45.000.
+const CURRENCY = {
+  en: { locale: 'en-US', currency: 'USD', scale: 1 },
+  es: { locale: 'es-CO', currency: 'COP', scale: 1000 },
+}
+
+// Pesos are always whole. Dollars show cents only when there are some, like in the app.
+function money(value) {
+  const { locale, currency, scale } = CURRENCY[I18N.lang]
+  const pesos = currency === 'COP'
+  const amount = pesos ? Math.round(value * scale) : Math.round(value * 100) / 100
+  const digits = pesos || Number.isInteger(amount) ? 0 : 2
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency,
+    currencyDisplay: 'narrowSymbol',
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }).format(amount)
+}
+
+const of = value => `${t('app.of')} ${money(value)}`
+
+function paintAmounts() {
+  for (const el of document.querySelectorAll('[data-amount]')) {
+    el.textContent = `${el.dataset.sign ?? ''}${money(Number(el.dataset.amount))}`
+  }
+  // Avatars show the first letter of the name, which changes with the language.
+  for (const row of document.querySelectorAll('.recent li')) {
+    row.querySelector('.toast-avatar').textContent = row.querySelector('[data-i18n]').textContent.charAt(0)
+  }
+}
+
+/* ---------- Live dashboard demo ---------- */
+
 const C = 2 * Math.PI * 92
-const COMMITTED = 1210000
+const COMMITTED = 1210
 
-// El ingreso extra cierra el ciclo: al final todo vuelve al punto de partida.
+// The extra income closes the loop: at the end everything is back where it started.
 const EVENTS = [
-  { title: 'Mercado', amount: 45000 },
-  { title: 'Café', amount: 12000 },
-  { title: 'Taxi', amount: 23000 },
-  { title: 'Ingreso extra', amount: 80000, income: true },
+  { title: 'app.groceries', amount: 45 },
+  { title: 'app.coffee', amount: 4.5 },
+  { title: 'app.taxi', amount: 23 },
+  { title: 'app.extraIncome', amount: 72.5, income: true },
 ]
 
-const state = { income: 3500000, spent: 1050000 }
+const state = { income: 3500, spent: 1050 }
 const start = { ...state }
 
 const els = {
@@ -80,14 +125,14 @@ const els = {
 
 const available = () => state.income - state.spent - COMMITTED
 
-function countTo(el, from, to, ms = 700) {
-  // t0 sale del primer frame: su hora puede ser anterior a performance.now().
+function countTo(el, from, to, format = money, ms = 700) {
+  // t0 comes from the first frame: its time can be earlier than performance.now().
   let t0 = 0
   const step = now => {
     t0 ||= now
     const p = Math.min((now - t0) / ms, 1)
     const eased = 1 - Math.pow(1 - p, 3)
-    el.textContent = money.format(Math.round(from + (to - from) * eased))
+    el.textContent = format(from + (to - from) * eased)
     if (p < 1) requestAnimationFrame(step)
   }
   requestAnimationFrame(step)
@@ -99,6 +144,12 @@ function paintRing() {
   els.spentArc.style.strokeDasharray = `${spentLen} ${C}`
   els.committedArc.style.strokeDasharray = `${committedLen} ${C}`
   els.committedArc.style.strokeDashoffset = `${-spentLen}`
+}
+
+function paintHero() {
+  els.amount.textContent = money(available())
+  els.sub.textContent = of(state.income)
+  els.spentStat.textContent = money(state.spent)
 }
 
 function restart(el, cls) {
@@ -114,10 +165,11 @@ function apply(event) {
 
   restart(els.btn, 'is-tap')
 
-  els.toastAvatar.textContent = event.title.charAt(0)
-  els.toastTitle.textContent = event.title
-  els.toastKind.textContent = event.income ? 'Ingreso registrado' : 'Gasto registrado'
-  els.toastAmount.textContent = `${event.income ? '+' : '−'}${money.format(event.amount)}`
+  const title = t(event.title)
+  els.toastAvatar.textContent = title.charAt(0)
+  els.toastTitle.textContent = title
+  els.toastKind.textContent = t(event.income ? 'toast.income' : 'toast.expense')
+  els.toastAmount.textContent = `${event.income ? '+' : '−'}${money(event.amount)}`
   els.toast.toggleAttribute('data-income', Boolean(event.income))
   els.toast.classList.add('is-on')
 
@@ -126,7 +178,7 @@ function apply(event) {
     restart(els.amount, 'is-bump')
     countTo(els.amount, before.available, available())
     countTo(els.spentStat, before.spent, state.spent)
-    if (event.income) countTo(els.sub, before.income, state.income)
+    if (event.income) countTo(els.sub, before.income, state.income, of)
   }, 250)
 
   setTimeout(() => els.toast.classList.remove('is-on'), 2400)
@@ -137,10 +189,9 @@ if (!calm) {
   let timer = 0
   const tick = () => {
     if (i === EVENTS.length) {
-      // Vuelta silenciosa al inicio. Disponible no cambia, así que no se nota.
+      // Silent reset to the start. Available doesn't change, so nobody notices.
       Object.assign(state, start)
-      els.sub.textContent = `de ${money.format(state.income)}`
-      els.spentStat.textContent = money.format(state.spent)
+      paintHero()
       paintRing()
       i = 0
     }
@@ -154,7 +205,7 @@ if (!calm) {
   })
 }
 
-/* ---------- Inclinación 3D del mock con el mouse ---------- */
+/* ---------- 3D tilt of the mock with the mouse ---------- */
 
 const stage = document.querySelector('.stage')
 const app = document.getElementById('app')
@@ -173,13 +224,13 @@ if (!calm && matchMedia('(pointer: fine)').matches) {
   })
 }
 
-/* ---------- Widgets que se reordenan solos ---------- */
+/* ---------- Widgets that reorder themselves ---------- */
 
 const board = document.getElementById('board')
 const toggle = document.getElementById('edit-toggle')
 const toggleLabel = document.getElementById('edit-label')
 
-// FLIP: mide, mueve en el DOM y anima desde la posición vieja.
+// FLIP: measure, move in the DOM, animate from the old position.
 function swapRandom() {
   const tiles = [...board.children]
   const a = Math.floor(Math.random() * tiles.length)
@@ -212,7 +263,7 @@ function syncBoard() {
   clearInterval(shuffle)
   board.toggleAttribute('data-editing', editing)
   toggle.setAttribute('aria-pressed', String(editing))
-  toggleLabel.textContent = editing ? 'Listo' : 'Personalizar'
+  toggleLabel.textContent = t(editing ? 'board.done' : 'board.customize')
   if (editing && boardOn && !calm) shuffle = setInterval(swapRandom, 1900)
 }
 
@@ -226,9 +277,9 @@ whileVisible(board, on => {
   syncBoard()
 })
 
-/* ---------- Demo de voz ---------- */
+/* ---------- Voice demo ---------- */
 
-// Todo sale de render(t): pausar o saltar a un paso es solo cambiar t.
+// Everything comes from render(t): pausing or jumping to a step only changes t.
 const demoScreen = document.getElementById('screen')
 const v = {
   amount: document.getElementById('v-amount'),
@@ -250,23 +301,34 @@ const v = {
 
 const END = 20800
 const CHAPTERS = [0, 6800, 11000, 15300]
-// Con "reducir movimiento": el momento que mejor resume cada paso.
+// With "reduce motion": the moment that best sums up each step.
 const STILLS = [5800, 10300, 14200, 19000]
 const CLICKS = [1300, 6900, 15400]
 
-const SAID = [
-  ['Gasté '],
-  ['45 mil en mercado', 'expense'],
-  [', '],
-  ['pagué el internet', 'fixed'],
-  [' y me entró un '],
-  ['bono de 200 mil', 'income'],
-]
-const SAID_LEN = SAID.reduce((n, [text]) => n + text.length, 0)
+// What the person says. The marked parts are what the AI picks up.
+const SAID = {
+  en: [
+    ['I spent '],
+    ['$45 on groceries', 'expense'],
+    [', '],
+    ['paid the internet', 'fixed'],
+    [' and got a '],
+    ['$200 bonus', 'income'],
+  ],
+  es: [
+    ['Gasté '],
+    ['45 mil en mercado', 'expense'],
+    [', '],
+    ['pagué el internet', 'fixed'],
+    [' y me entró un '],
+    ['bono de 200 mil', 'income'],
+  ],
+}
+const saidLength = () => SAID[I18N.lang].reduce((n, [text]) => n + text.length, 0)
 
-// Antes y después de guardar: +45.000 mercado, +90.000 internet (deja de estar comprometido), +200.000 bono.
-const BEFORE = { income: 3500000, spent: 1050000, committed: 1210000 }
-const AFTER = { income: 3700000, spent: 1185000, committed: 1120000 }
+// Before and after saving: +45 groceries, +90 internet (no longer committed), +200 bonus.
+const BEFORE = { income: 3500, spent: 1050, committed: 1210 }
+const AFTER = { income: 3700, spent: 1185, committed: 1120 }
 const availableOf = s => s.income - s.spent - s.committed
 
 const clamp = x => Math.min(Math.max(x, 0), 1)
@@ -286,7 +348,7 @@ function paintSaid(n) {
   saidShown = n
   let left = n
   v.saidText.replaceChildren(
-    ...SAID.map(([text, kind]) => {
+    ...SAID[I18N.lang].map(([text, kind]) => {
       const part = text.slice(0, Math.max(left, 0))
       left -= text.length
       if (!kind) return part
@@ -337,19 +399,19 @@ function render(t) {
   if (demoScreen.dataset.fab !== fab) demoScreen.dataset.fab = fab
 
   setFlag('data-said', on(1300, 11000))
-  paintSaid(Math.round(clamp((t - 1700) / 4500) * SAID_LEN))
+  paintSaid(Math.round(clamp((t - 1700) / 4500) * saidLength()))
   setFlag('data-parsed', on(9000, 11000))
 
   setFlag('data-bubble', on(6900, 11000))
   const listening = t < 9000
-  setText(v.bubbleTitle, listening ? 'Escuchando lo que dijiste…' : 'Entendiendo…')
-  setText(v.bubbleNote, listening ? 'Whisper · en tu equipo' : 'Tu IA · local o con tu key')
+  setText(v.bubbleTitle, I18N.t(listening ? 'voice.listening' : 'voice.thinking'))
+  setText(v.bubbleNote, I18N.t(listening ? 'voice.whisper' : 'voice.yourAi'))
 
   setFlag('data-modal', on(11000, 15800))
   v.items.forEach((el, i) => el.classList.toggle('is-in', t >= 11400 + i * 350))
   v.items[0].classList.toggle('is-focus', on(12500, 13600))
   v.save.classList.toggle('is-press', on(15400, 15800))
-  setText(v.save, on(15400) ? 'Guardando…' : 'Guardar 3 registros')
+  setText(v.save, I18N.t(on(15400) ? 'voice.saving' : 'voice.save'))
 
   const done = t >= 15900
   v.internet.classList.toggle('is-paid', done)
@@ -358,8 +420,8 @@ function render(t) {
   paintScreenRing(done)
   const from = availableOf(BEFORE)
   const to = availableOf(AFTER)
-  setText(v.amount, money.format(Math.round(from + (to - from) * ease(clamp((t - 16100) / 1000)))))
-  setText(v.income, `de ${money.format((done ? AFTER : BEFORE).income)}`)
+  setText(v.amount, money(from + (to - from) * ease(clamp((t - 16100) / 1000))))
+  setText(v.income, of((done ? AFTER : BEFORE).income))
 
   const target = on(300, 11800) ? 'fab' : on(11800, 13700) ? 'item' : on(13700, 16000) ? 'save' : null
   placeCursor(target)
@@ -374,19 +436,19 @@ function render(t) {
   })
 }
 
-let t = calm ? STILLS[0] : 0
-let playing = !calm
+let time = calm ? STILLS[0] : 0
+let playing = !calm && !recording
 let inView = false
 let raf = 0
 let last = 0
 
 function frame(now) {
-  const prev = t
-  t += last ? Math.min(now - last, 100) : 0
+  const prev = time
+  time += last ? Math.min(now - last, 100) : 0
   last = now
-  if (t >= END) t = 0
-  else if (CLICKS.some(c => prev < c && c <= t)) restart(v.cursor, 'is-click')
-  render(t)
+  if (time >= END) time = 0
+  else if (CLICKS.some(c => prev < c && c <= time)) restart(v.cursor, 'is-click')
+  render(time)
   raf = requestAnimationFrame(frame)
 }
 
@@ -395,19 +457,19 @@ function syncDemo() {
   last = 0
   if (playing && inView) raf = requestAnimationFrame(frame)
   v.play.setAttribute('aria-pressed', String(playing))
-  v.play.setAttribute('aria-label', playing ? 'Pausar demo' : 'Reproducir demo')
+  v.play.setAttribute('aria-label', I18N.t(playing ? 'voice.pause' : 'voice.play'))
 }
 
 v.chapters.forEach((el, i) =>
   el.addEventListener('click', () => {
-    t = calm ? STILLS[i] : CHAPTERS[i]
+    time = calm ? STILLS[i] : CHAPTERS[i]
     playing = !calm
-    render(t)
+    render(time)
     syncDemo()
   }),
 )
 
-if (!calm) {
+if (!calm && !recording) {
   v.play.hidden = false
   v.play.addEventListener('click', () => {
     playing = !playing
@@ -415,9 +477,40 @@ if (!calm) {
   })
 }
 
-addEventListener('resize', () => render(t))
-render(t)
+addEventListener('resize', () => render(time))
+render(time)
 whileVisible(demoScreen, visible => {
   inView = visible
   syncDemo()
 })
+
+/* ---------- Language ---------- */
+
+function paintLanguage() {
+  paintDownload()
+  paintAmounts()
+  paintHero()
+  syncBoard()
+  syncDemo()
+  saidShown = -1
+  render(time)
+}
+
+paintLanguage()
+I18N.onChange(paintLanguage)
+
+/* ---------- Recording ---------- */
+
+// The recorder seeks the voice demo frame by frame. The clock is virtual, so clicks
+// and CSS transitions still look like they do live.
+if (recording) {
+  window.voiceDemo = {
+    end: END,
+    clicks: CLICKS,
+    seek(t) {
+      if (CLICKS.some(c => time < c && c <= t)) restart(v.cursor, 'is-click')
+      time = t
+      render(time)
+    },
+  }
+}
